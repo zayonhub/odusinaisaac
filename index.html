@@ -195,17 +195,44 @@
     margin-bottom:18px;
     position:relative;
     border:1px solid var(--ink);
+    border-radius:18px;
     background:var(--paper-soft);
     overflow:hidden;
     cursor:default;
     transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
   }
   .card:hover{
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     border-color: var(--persimmon);
-    box-shadow: 6px 6px 0px var(--teal);
+    box-shadow: 0 18px 34px -12px rgba(26,16,48,0.38);
   }
-  .card img{ display:block; width:100%; height:auto; }
+
+  /* ---------- image loading state ---------- */
+  .img-wrap{
+    position:relative;
+    background:var(--paper-soft);
+    min-height:80px;
+  }
+  .img-wrap::before{
+    content:"";
+    position:absolute; top:50%; left:50%;
+    width:26px; height:26px;
+    margin:-13px 0 0 -13px;
+    border:3px solid rgba(26,16,48,0.15);
+    border-top-color: var(--persimmon);
+    border-radius:50%;
+    animation: spin .8s linear infinite;
+    z-index:2;
+  }
+  .img-wrap.loaded::before{ display:none; }
+  .card img{
+    display:block; width:100%; height:auto;
+    opacity:0;
+    transition: opacity .4s ease;
+    position:relative; z-index:1;
+  }
+  .card img.loaded{ opacity:1; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
   .card-info{
     position:absolute; left:0; right:0; bottom:0;
     padding:14px 16px;
@@ -548,13 +575,28 @@
     card.className = 'card';
     card.dataset.cat = p.category;
     card.innerHTML = `
-      <img src="${p.image_url}" alt="${p.title}" loading="lazy" width="${baseWidth}" height="${h}">
+      <div class="img-wrap">
+        <img src="${p.image_url}" alt="${p.title}" loading="lazy" width="${baseWidth}" height="${h}">
+      </div>
       <div class="card-info">
         <span class="cat">${catLabel[p.category] || p.category}</span>
         <span class="title">${p.title}</span>
       </div>
     `;
     grid.appendChild(card);
+
+    const wrap = card.querySelector('.img-wrap');
+    const img = card.querySelector('img');
+    const markLoaded = () => {
+      wrap.classList.add('loaded');
+      img.classList.add('loaded');
+    };
+    if (img.complete && img.naturalWidth > 0){
+      markLoaded();
+    } else {
+      img.addEventListener('load', markLoaded);
+      img.addEventListener('error', markLoaded);
+    }
   }
 
   function renderEmptyState(message){
