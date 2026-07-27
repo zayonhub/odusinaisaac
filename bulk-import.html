@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zayon — Bulk Import Gallery to Portfolio</title>
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#141414; --border:#262626; --text:#f2f2f2;
+    --muted:#8a8a8a; --accent:#e8392f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+    padding:2rem;
+  }
+  h1{font-size:1.4rem; margin:0 0 0.25rem;}
+  p.sub{color:var(--muted); font-size:0.85rem; margin:0 0 1.5rem;}
+  .bar{
+    display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;
+    margin-bottom:1.5rem; padding:1rem; background:var(--panel);
+    border:1px solid var(--border); border-radius:8px;
+  }
+  button{
+    background:var(--accent); color:#fff; border:none; padding:0.55rem 1.1rem;
+    border-radius:6px; cursor:pointer; font-size:0.85rem; font-weight:600;
+  }
+  button:disabled{opacity:0.4; cursor:not-allowed;}
+  button.secondary{background:transparent; border:1px solid var(--border); color:var(--text);}
+  .status{font-size:0.8rem; color:var(--muted);}
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:1rem;
+  }
+  .card{
+    background:var(--panel); border:1px solid var(--border); border-radius:8px;
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .card img{width:100%; height:150px; object-fit:cover; display:block; background:#000;}
+  .card .body{padding:0.75rem; display:flex; flex-direction:column; gap:0.5rem;}
+  .card .fname{font-size:0.7rem; color:var(--muted); word-break:break-all;}
+  input, select{
+    background:#000; border:1px solid var(--border); color:var(--text);
+    padding:0.4rem 0.5rem; border-radius:4px; font-size:0.8rem; width:100%;
+  }
+  label{font-size:0.7rem; color:var(--muted); display:block; margin-bottom:0.2rem;}
+  .row{display:flex; gap:0.5rem;}
+  .row > div{flex:1;}
+  .skip{opacity:0.4;}
+  .badge{
+    font-size:0.65rem; padding:0.15rem 0.4rem; border-radius:3px;
+    background:#1e3a1e; color:#8fd98f; display:inline-block;
+  }
+  .badge.err{background:#3a1e1e; color:#d98f8f;}
+</style>
+</head>
+<body>
+
+<h1>Bulk Import — gallery → portfolio_projects</h1>
+<p class="sub">Lists every file in <code>zayon-media/gallery</code>, lets you set a title + category per image, then inserts them all as rows.</p>
+
+<div class="bar" id="loginBar">
+  <div style="flex:1; min-width:180px;">
+    <label>Admin email</label>
+    <input type="email" id="login-email" placeholder="you@zayoncreative.com">
+  </div>
+  <div style="flex:1; min-width:180px;">
+    <label>Password</label>
+    <input type="password" id="login-password">
+  </div>
+  <button id="loginBtn" style="align-self:flex-end;">Sign in</button>
+  <span class="status" id="loginStatus">Sign in with your admin account (same as admin.html) — inserts require it.</span>
+</div>
+
+<div class="bar" id="actionBar" style="display:none;">
+  <button id="loadBtn">Load images from gallery</button>
+  <button id="importBtn" class="secondary" disabled>Insert all as rows</button>
+  <span class="status" id="status">Not loaded yet.</span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL = 'https://wwuutndlekinlkdgjyao.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_JxpzvFGpaX83HsVJfweM4A__Fi4jY24';
+  const BUCKET = 'zayon-media';
+  const FOLDER = 'gallery';
+  const TABLE = 'portfolio_projects';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const grid = document.getElementById('grid');
+  const statusEl = document.getElementById('status');
+  const loadBtn = document.getElementById('loadBtn');
+  const importBtn = document.getElementById('importBtn');
+  const loginBar = document.getElementById('loginBar');
+  const actionBar = document.getElementById('actionBar');
+  const loginStatus = document.getElementById('loginStatus');
+  const loginBtn = document.getElementById('loginBtn');
+
+  let files = [];
+
+  // Check if already signed in (e.g. session persisted from admin.html on same domain)
+  (async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session){
+      loginBar.style.display = 'none';
+      actionBar.style.display = 'flex';
+    }
+  })();
+
+  loginBtn.addEventListener('click', async () => {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    loginStatus.textContent = 'Signing in...';
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error){
+      loginStatus.textContent = 'Error: ' + error.message;
+      return;
+    }
+    loginBar.style.display = 'none';
+    actionBar.style.display = 'flex';
+  });
+
+  function titleFromFilename(name){
+    const base = name.replace(/\.[^/.]+$/, '');
+    return base.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  loadBtn.addEventListener('click', async () => {
+    statusEl.textContent = 'Loading...';
+    grid.innerHTML = '';
+    loadBtn.disabled = true;
+
+    const { data, error } = await supabase.storage.from(BUCKET).list(FOLDER, {
+      limit: 500,
+      sortBy: { column: 'name', order: 'asc' }
+    });
+
+    loadBtn.disabled = false;
+
+    if (error){
+      statusEl.textContent = 'Error: ' + error.message;
+      return;
+    }
+
+    // Filter out folders/placeholder entries, keep actual image files
+    files = (data || []).filter(f => f.id !== null && /\.(jpe?g|png|webp|gif|avif)$/i.test(f.name));
+
+    if (files.length === 0){
+      statusEl.textContent = 'No image files found in gallery/. Check the folder name and that files exist there.';
+      return;
+    }
+
+    statusEl.textContent = `Found ${files.length} image(s).`;
+    importBtn.disabled = false;
+
+    grid.innerHTML = files.map((f, i) => {
+      const path = `${FOLDER}/${f.name}`;
+      const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(path);
+      return `
+        <div class="card" data-index="${i}">
+          <img src="${urlData.publicUrl}" alt="${f.name}" loading="lazy">
+          <div class="body">
+            <div class="fname">${f.name}</div>
+            <div>
+              <label>Title</label>
+              <input type="text" class="title-input" value="${titleFromFilename(f.name)}">
+            </div>
+            <div class="row">
+              <div>
+                <label>Category</label>
+                <select class="cat-input">
+                  <option value="social">Social Media</option>
+                  <option value="branding">Branding</option>
+                  <option value="packaging">Packaging</option>
+                </select>
+              </div>
+              <div>
+                <label>Sort</label>
+                <input type="number" class="sort-input" value="${i + 1}">
+              </div>
+            </div>
+            <label><input type="checkbox" class="skip-input" style="width:auto; display:inline;"> Skip this one</label>
+          </div>
+        </div>
+      `;
+    }).join('');
+  });
+
+  importBtn.addEventListener('click', async () => {
+    importBtn.disabled = true;
+    statusEl.textContent = 'Inserting rows...';
+
+    const cards = Array.from(grid.querySelectorAll('.card'));
+    const rows = [];
+
+    cards.forEach(card => {
+      const skip = card.querySelector('.skip-input').checked;
+      if (skip) return;
+      const i = parseInt(card.dataset.index, 10);
+      const f = files[i];
+      rows.push({
+        title: card.querySelector('.title-input').value.trim() || titleFromFilename(f.name),
+        category: card.querySelector('.cat-input').value,
+        image_path: `${FOLDER}/${f.name}`,
+        sort_order: parseInt(card.querySelector('.sort-input').value, 10) || 0,
+        aspect_ratio: 1
+      });
+    });
+
+    if (rows.length === 0){
+      statusEl.textContent = 'Nothing to insert (all rows skipped).';
+      importBtn.disabled = false;
+      return;
+    }
+
+    const { data, error } = await supabase.from(TABLE).insert(rows).select();
+
+    if (error){
+      statusEl.innerHTML = `<span class="badge err">Failed</span> ${error.message}`;
+      importBtn.disabled = false;
+      return;
+    }
+
+    statusEl.innerHTML = `<span class="badge">Success</span> Inserted ${data.length} row(s) into ${TABLE}. Check your site now.`;
+    importBtn.disabled = true;
+  });
+</script>
+</body>
+</html>
