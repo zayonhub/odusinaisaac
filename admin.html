@@ -307,13 +307,15 @@
           </div>
         </div>
         <div class="field">
-          <label class="mono">Image File</label>
-          <input type="file" id="new-image" accept="image/*">
+          <label class="mono">Image File(s)</label>
+          <input type="file" id="new-image" accept="image/*" multiple>
+          <p class="hint" id="new-image-count"></p>
         </div>
         <div class="save-row">
           <button class="btn" id="add-project-btn">Upload &amp; Add</button>
           <span class="save-msg" id="add-project-msg"></span>
         </div>
+        <p class="hint">Select multiple files to upload a batch at once. With multiple files, the Title above becomes a prefix (e.g. "Launch Carousel 1", "Launch Carousel 2") — leave Title blank to use each file's own filename instead. Images are automatically compressed (resized to a max of 2000px, re-encoded as high-quality JPEG) before upload for faster loading, and the Aspect Ratio field is auto-detected per image — you only need to set it manually if detection fails.</p>
       </div>
 
       <div class="top-actions">
@@ -581,45 +583,133 @@
 
   document.getElementById('refresh-gallery-btn').addEventListener('click', loadGallery);
 
+  // ---------------------------------------------------------------
+  // Client-side image compression before upload.
+  // Resizes to a max dimension and re-encodes as JPEG at high quality,
+  // which keeps images sharp at display size while cutting file size
+  // significantly (raw phone/camera exports are often 3-8MB+).
+  // Falls back to the original file if compression fails or doesn't
+  // actually shrink anything (e.g. already-small or unsupported types).
+  // ---------------------------------------------------------------
+  async function compressImage(file, maxDimension = 2000, quality = 0.85){
+    // Skip formats where re-encoding doesn't make sense
+    if (file.type === 'image/svg+xml' || file.type === 'image/gif'){
+      return { file, aspectRatio: null };
+    }
+
+    try {
+      const bitmap = await createImageBitmap(file);
+      let { width, height } = bitmap;
+      const naturalRatio = width / height;
+
+      if (width > maxDimension || height > maxDimension){
+        if (width > height){
+          height = Math.round((height / width) * maxDimension);
+          width = maxDimension;
+        } else {
+          width = Math.round((width / height) * maxDimension);
+          height = maxDimension;
+        }
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(bitmap, 0, 0, width, height);
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
+      if (!blob || blob.size >= file.size){
+        // Compression didn't help (rare, e.g. tiny source file) — use original
+        return { file, aspectRatio: naturalRatio };
+      }
+
+      const compressedName = file.name.replace(/\.[^/.]+$/, '') + '.jpg';
+      const compressedFile = new File([blob], compressedName, { type: 'image/jpeg' });
+      return { file: compressedFile, aspectRatio: naturalRatio };
+    } catch (err){
+      console.warn('Compression failed, using original file for', file.name, err);
+      return { file, aspectRatio: null };
+    }
+  }
+
+  const newImageInput = document.getElementById('new-image');
+  const newImageCount = document.getElementById('new-image-count');
+  newImageInput.addEventListener('change', () => {
+    const n = newImageInput.files.length;
+    newImageCount.textContent = n > 1 ? `${n} files selected.` : '';
+  });
+
   document.getElementById('add-project-btn').addEventListener('click', async () => {
     const msg = document.getElementById('add-project-msg');
     const fileInput = document.getElementById('new-image');
-    const file = fileInput.files[0];
-    const title = document.getElementById('new-title').value;
+    const files = Array.from(fileInput.files);
+    const title = document.getElementById('new-title').value.trim();
     const category = document.getElementById('new-category').value;
     const ratio = parseFloat(document.getElementById('new-ratio').value) || 1;
-    const sort = parseInt(document.getElementById('new-sort').value) || 0;
+    const baseSort = parseInt(document.getElementById('new-sort').value) || 0;
+    const addBtn = document.getElementById('add-project-btn');
 
-    if (!file || !title){
-      msg.textContent = 'Add a title and choose an image file first.';
+    if (files.length === 0 || (!title && files.length === 1)){
+      msg.textContent = 'Add a title and choose at least one image file.';
       msg.className = 'save-msg error';
       return;
     }
 
-    msg.textContent = 'Uploading...';
-    msg.className = 'save-msg';
+    addBtn.disabled = true;
+    let uploaded = 0;
+    let failed = 0;
 
-    const path = `${category}/${Date.now()}-${file.name}`;
-    const { error: upErr } = await supabase.storage.from(STORAGE_BUCKET).upload(path, file);
-    if (upErr){
-      msg.textContent = upErr.message;
-      msg.className = 'save-msg error';
-      return;
+    for (let i = 0; i < files.length; i++){
+      const original = files[i];
+      msg.textContent = `Compressing ${i + 1} of ${files.length}...`;
+      msg.className = 'save-msg';
+
+      const { file, aspectRatio } = await compressImage(original);
+
+      msg.textContent = `Uploading ${i + 1} of ${files.length}...`;
+
+      const path = `${category}/${Date.now()}-${i}-${file.name}`;
+      const { error: upErr } = await supabase.storage.from(STORAGE_BUCKET).upload(path, file);
+      if (upErr){
+        console.error('Upload failed for', file.name, upErr);
+        failed++;
+        continue;
+      }
+
+      const rowTitle = files.length > 1
+        ? (title ? `${title} ${i + 1}` : original.name.replace(/\.[^/.]+$/, ''))
+        : title;
+
+      // Use the image's actual measured aspect ratio when available so it
+      // displays correctly in the masonry grid; fall back to the manual
+      // field only if measurement wasn't possible.
+      const rowRatio = aspectRatio || ratio;
+
+      const { error: insErr } = await supabase.from('portfolio_projects').insert({
+        title: rowTitle, category, image_path: path, aspect_ratio: rowRatio, sort_order: baseSort + i,
+      });
+      if (insErr){
+        console.error('Insert failed for', file.name, insErr);
+        failed++;
+        continue;
+      }
+      uploaded++;
     }
 
-    const { error: insErr } = await supabase.from('portfolio_projects').insert({
-      title, category, image_path: path, aspect_ratio: ratio, sort_order: sort,
-    });
-    if (insErr){
-      msg.textContent = insErr.message;
+    addBtn.disabled = false;
+
+    if (failed === 0){
+      msg.textContent = `${uploaded} project${uploaded > 1 ? 's' : ''} added.`;
+      msg.className = 'save-msg success';
+    } else {
+      msg.textContent = `${uploaded} added, ${failed} failed — check the browser console for details.`;
       msg.className = 'save-msg error';
-      return;
     }
 
-    msg.textContent = 'Project added.';
-    msg.className = 'save-msg success';
     document.getElementById('new-title').value = '';
     fileInput.value = '';
+    newImageCount.textContent = '';
     loadGallery();
   });
 
