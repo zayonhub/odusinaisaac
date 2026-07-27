@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isaac Portfolio, Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A1030;
+    --paper:#FBF7FF;
+    --paper-soft:#F1E6FF;
+    --persimmon:#FF3D7A;
+    --teal:#1FC6E0;
+    --mustard:#FFD23F;
+    --violet:#8A3FFC;
+    --line: rgba(26,16,48,0.14);
+    --danger:#E0334D;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    min-height:100vh;
+  }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; text-transform:uppercase; letter-spacing:0.06em; }
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+  input, textarea, select{ font-family:'Work Sans', sans-serif; }
+
+  /* ---------------- login screen ---------------- */
+  #login-screen{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,61,122,0.14) 0%, transparent 42%),
+      radial-gradient(circle at 85% 80%, rgba(31,198,224,0.16) 0%, transparent 42%),
+      var(--paper);
+  }
+  .login-card{
+    width:100%; max-width:380px;
+    border:2px solid var(--ink);
+    background:var(--paper);
+    padding:36px 32px;
+    box-shadow:8px 8px 0 var(--persimmon);
+  }
+  .login-card h1{ font-size:1.6rem; text-transform:uppercase; margin-bottom:6px; }
+  .login-card p.tag{ font-size:0.72rem; opacity:0.65; margin-bottom:26px; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-size:0.68rem; margin-bottom:6px; }
+  .field input, .field textarea, .field select{
+    width:100%; padding:11px 12px; border:1px solid var(--ink); background:var(--paper);
+    font-size:0.9rem; color:var(--ink); border-radius:0;
+  }
+  .field textarea{ resize:vertical; min-height:70px; }
+  .btn{
+    display:inline-block; padding:12px 22px; border:1px solid var(--ink);
+    background:var(--ink); color:var(--paper);
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em;
+    border-radius:30px; transition: all .2s ease;
+  }
+  .btn:hover{ background:var(--persimmon); border-color:var(--persimmon); }
+  .btn.btn-outline{ background:transparent; color:var(--ink); }
+  .btn.btn-outline:hover{ background:var(--paper-soft); color:var(--ink); border-color:var(--persimmon); }
+  .btn.btn-danger{ background:var(--danger); border-color:var(--danger); color:#fff; }
+  .btn.btn-danger:hover{ background:#b91f36; }
+  .btn.btn-block{ width:100%; text-align:center; }
+  .login-msg{ font-size:0.78rem; margin-top:14px; color:var(--danger); }
+
+  /* ---------------- admin shell ---------------- */
+  #admin-shell{ display:none; min-height:100vh; }
+  .sidebar{
+    width:220px; flex-shrink:0;
+    border-right:1px solid var(--ink);
+    padding:28px 20px;
+    display:flex; flex-direction:column; gap:6px;
+    position:fixed; top:0; left:0; bottom:0;
+    background:var(--paper);
+  }
+  .sidebar .brand{ font-size:1rem; margin-bottom:30px; display:flex; align-items:center; gap:8px; }
+  .sidebar .brand .dot{ width:10px; height:10px; border-radius:50%; background:var(--persimmon); display:inline-block; }
+  .nav-btn{
+    text-align:left; padding:12px 14px; border:1px solid transparent; background:transparent;
+    font-family:'IBM Plex Mono',monospace; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.05em;
+    color:var(--ink); border-radius:8px;
+  }
+  .nav-btn:hover{ background:var(--paper-soft); }
+  .nav-btn.active{ background:var(--ink); color:var(--paper); }
+  .sidebar .signout{ margin-top:auto; }
+
+  .main{ margin-left:220px; padding:40px clamp(20px,4vw,56px); width:100%; max-width:980px; }
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+  .panel-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;
+    border-bottom:1px solid var(--ink); padding-bottom:16px; margin-bottom:30px;
+  }
+  .panel-head h2{ font-size:1.7rem; text-transform:uppercase; }
+  .panel-head .tag{ font-size:0.7rem; opacity:0.6; }
+
+  .card-box{
+    border:1px solid var(--ink); background:var(--paper-soft); padding:26px; margin-bottom:22px;
+  }
+  .card-box h3{ font-size:1rem; text-transform:uppercase; margin-bottom:18px; }
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:640px){ .grid-2{ grid-template-columns:1fr; } }
+
+  .save-row{ display:flex; align-items:center; gap:14px; margin-top:6px; }
+  .save-msg{ font-size:0.76rem; opacity:0.75; }
+  .save-msg.error{ color:var(--danger); }
+  .save-msg.success{ color:#1B8A3D; }
+
+  /* project / testimonial list items */
+  .item-row{
+    border:1px solid var(--ink); background:var(--paper); padding:18px; margin-bottom:14px;
+    display:grid; grid-template-columns:80px 1fr auto; gap:16px; align-items:center;
+  }
+  @media (max-width:700px){ .item-row{ grid-template-columns:1fr; } }
+  .item-row img{ width:80px; height:80px; object-fit:cover; border:1px solid var(--ink); }
+  .item-fields{ display:grid; grid-template-columns:1.4fr 1fr 0.6fr 0.6fr; gap:10px; }
+  @media (max-width:900px){ .item-fields{ grid-template-columns:1fr 1fr; } }
+  .item-actions{ display:flex; gap:8px; flex-shrink:0; }
+  .item-actions .btn{ padding:9px 14px; font-size:0.62rem; }
+
+  .testimonial-row{ grid-template-columns:1fr auto; }
+  .testimonial-fields{ display:grid; grid-template-columns:2fr 1fr 1fr 0.6fr; gap:10px; }
+  @media (max-width:900px){ .testimonial-fields{ grid-template-columns:1fr 1fr; } }
+  .testimonial-fields textarea{ grid-column: 1 / -1; }
+
+  .empty-note{ font-size:0.8rem; opacity:0.6; padding:20px 0; }
+  .hint{ font-size:0.74rem; opacity:0.55; margin-top:10px; line-height:1.5; }
+  .top-actions{ display:flex; justify-content:flex-end; margin-bottom:16px; }
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>Admin</h1>
+    <p class="tag mono">Isaac Portfolio Content Manager</p>
+    <div class="field">
+      <label class="mono">Email</label>
+      <input type="email" id="login-email" placeholder="you@example.com">
+    </div>
+    <div class="field">
+      <label class="mono">Password</label>
+      <input type="password" id="login-password" placeholder="Your password">
+    </div>
+    <button class="btn btn-block" id="login-btn">Log In</button>
+    <p class="login-msg" id="login-msg"></p>
+    <p class="hint">Sign in with the admin account created in your Supabase project, under Authentication, Users.</p>
+  </div>
+</div>
+
+<!-- ================= ADMIN SHELL ================= -->
+<div id="admin-shell">
+  <div class="sidebar">
+    <div class="brand"><span class="dot"></span>ISAAC CMS</div>
+    <button class="nav-btn active" data-panel="panel-site">Site Content</button>
+    <button class="nav-btn" data-panel="panel-gallery">Gallery</button>
+    <button class="nav-btn" data-panel="panel-testimonials">Testimonials</button>
+    <button class="btn btn-outline signout" id="signout-btn">Log Out</button>
+  </div>
+
+  <div class="main">
+
+    <!-- ---------- SITE CONTENT PANEL ---------- -->
+    <div class="panel active" id="panel-site">
+      <div class="panel-head">
+        <h2>Site Content</h2>
+        <span class="tag mono">Hero, About, Footer</span>
+      </div>
+
+      <div class="card-box">
+        <h3>Hero</h3>
+        <div class="field">
+          <label class="mono">Job Tag</label>
+          <input type="text" id="f-ticket-job" placeholder="Job No. 2026 / 014">
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label class="mono">Location Tag</label>
+            <input type="text" id="f-ticket-location" placeholder="Based in Lagos, NG">
+          </div>
+          <div class="field">
+            <label class="mono">Status Tag</label>
+            <input type="text" id="f-ticket-status" placeholder="Status: Open for Commissions">
+          </div>
+        </div>
+        <div class="field">
+          <label class="mono">Headline (HTML allowed, use &lt;br&gt; for line breaks and &lt;em&gt; for the highlighted word)</label>
+          <textarea id="f-hero-title">Graphic&lt;br&gt;Design &lt;em&gt;for brands&lt;/em&gt;&lt;br&gt;that move.</textarea>
+        </div>
+        <div class="field">
+          <label class="mono">Subtitle</label>
+          <textarea id="f-hero-subtitle" placeholder="One or two sentences under the headline"></textarea>
+        </div>
+        <div class="field">
+          <label class="mono">Stamp Text (HTML allowed, use &lt;br&gt;)</label>
+          <input type="text" id="f-hero-stamp" placeholder="Approved&lt;br&gt;for&lt;br&gt;Production">
+        </div>
+      </div>
+
+      <div class="card-box">
+        <h3>About</h3>
+        <div class="field">
+          <label class="mono">Photo URL</label>
+          <input type="text" id="f-about-photo" placeholder="https://...">
+        </div>
+        <div class="field">
+          <label class="mono">Photo Caption</label>
+          <input type="text" id="f-about-caption" placeholder="Isaac, at work">
+        </div>
+        <div class="field">
+          <label class="mono">Bio (HTML allowed, wrap each paragraph in &lt;p&gt;)</label>
+          <textarea id="f-about-bio" style="min-height:120px;"></textarea>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label class="mono">Location</label>
+            <input type="text" id="f-spec-location" placeholder="Lagos, Nigeria">
+          </div>
+          <div class="field">
+            <label class="mono">Specialties</label>
+            <input type="text" id="f-spec-specialties" placeholder="Social / Branding / Packaging">
+          </div>
+          <div class="field">
+            <label class="mono">Tools</label>
+            <input type="text" id="f-spec-tools" placeholder="Figma, CorelDraw, Photoshop, Canva">
+          </div>
+          <div class="field">
+            <label class="mono">Availability</label>
+            <input type="text" id="f-spec-availability" placeholder="Open for Projects">
+          </div>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <h3>Footer &amp; Contact</h3>
+        <div class="field">
+          <label class="mono">Footer Heading (HTML allowed, use &lt;br&gt; and &lt;em&gt;)</label>
+          <textarea id="f-footer-heading">Let's build&lt;br&gt;your next &lt;em&gt;campaign.&lt;/em&gt;</textarea>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label class="mono">Email</label>
+            <input type="email" id="f-contact-email" placeholder="hello@example.com">
+          </div>
+          <div class="field">
+            <label class="mono">Availability Note</label>
+            <input type="text" id="f-footer-availability" placeholder="Currently taking on Q3 2026 projects">
+          </div>
+          <div class="field">
+            <label class="mono">Instagram URL</label>
+            <input type="text" id="f-social-instagram" placeholder="https://instagram.com/...">
+          </div>
+          <div class="field">
+            <label class="mono">Behance URL</label>
+            <input type="text" id="f-social-behance" placeholder="https://behance.net/...">
+          </div>
+          <div class="field">
+            <label class="mono">LinkedIn URL</label>
+            <input type="text" id="f-social-linkedin" placeholder="https://linkedin.com/in/...">
+          </div>
+        </div>
+      </div>
+
+      <div class="save-row">
+        <button class="btn" id="save-site-btn">Save Site Content</button>
+        <span class="save-msg" id="save-site-msg"></span>
+      </div>
+    </div>
+
+    <!-- ---------- GALLERY PANEL ---------- -->
+    <div class="panel" id="panel-gallery">
+      <div class="panel-head">
+        <h2>Gallery</h2>
+        <span class="tag mono">Social / Branding / Packaging</span>
+      </div>
+
+      <div class="card-box">
+        <h3>Add New Project</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label class="mono">Title</label>
+            <input type="text" id="new-title" placeholder="Launch Carousel, Skincare Drop">
+          </div>
+          <div class="field">
+            <label class="mono">Category</label>
+            <select id="new-category">
+              <option value="social">Social Media</option>
+              <option value="branding">Branding</option>
+              <option value="packaging">Packaging</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="mono">Aspect Ratio (width divided by height, example 1.25)</label>
+            <input type="number" step="0.05" id="new-ratio" placeholder="1.25">
+          </div>
+          <div class="field">
+            <label class="mono">Sort Order</label>
+            <input type="number" id="new-sort" placeholder="0">
+          </div>
+        </div>
+        <div class="field">
+          <label class="mono">Image File</label>
+          <input type="file" id="new-image" accept="image/*">
+        </div>
+        <div class="save-row">
+          <button class="btn" id="add-project-btn">Upload &amp; Add</button>
+          <span class="save-msg" id="add-project-msg"></span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn btn-outline" id="refresh-gallery-btn">Refresh List</button>
+      </div>
+      <div id="gallery-list"></div>
+    </div>
+
+    <!-- ---------- TESTIMONIALS PANEL ---------- -->
+    <div class="panel" id="panel-testimonials">
+      <div class="panel-head">
+        <h2>Testimonials</h2>
+        <span class="tag mono">Client Feedback</span>
+      </div>
+
+      <div class="card-box">
+        <h3>Add New Testimonial</h3>
+        <div class="field">
+          <label class="mono">Quote</label>
+          <textarea id="new-quote" placeholder="What the client said"></textarea>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label class="mono">Brand Name</label>
+            <input type="text" id="new-brand" placeholder="Nero Coffee">
+          </div>
+          <div class="field">
+            <label class="mono">Brand Role</label>
+            <input type="text" id="new-role" placeholder="Founder">
+          </div>
+          <div class="field">
+            <label class="mono">Project Tag</label>
+            <input type="text" id="new-project-tag" placeholder="Packaging and identity, 2025">
+          </div>
+          <div class="field">
+            <label class="mono">Sort Order</label>
+            <input type="number" id="new-t-sort" placeholder="0">
+          </div>
+        </div>
+        <div class="save-row">
+          <button class="btn" id="add-testimonial-btn">Add Testimonial</button>
+          <span class="save-msg" id="add-testimonial-msg"></span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn btn-outline" id="refresh-testimonials-btn">Refresh List</button>
+      </div>
+      <div id="testimonials-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  // ---------------------------------------------------------------
+  // SUPABASE CONFIG, use the same project as your portfolio site.
+  // ---------------------------------------------------------------
+  const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+  const STORAGE_BUCKET = 'portfolio';
+
+  // ---------------------------------------------------------------
+  // EXPECTED TABLES (run this once in the Supabase SQL editor):
+  //
+  // create table site_content (
+  //   id int primary key default 1,
+  //   ticket_job text, ticket_location text, ticket_status text,
+  //   hero_title_html text, hero_subtitle text, hero_stamp_html text,
+  //   about_photo_url text, about_photo_caption text, about_bio_html text,
+  //   spec_location text, spec_specialties text, spec_tools text, spec_availability text,
+  //   footer_heading_html text, contact_email text, footer_availability text,
+  //   social_instagram text, social_behance text, social_linkedin text
+  // );
+  // insert into site_content (id) values (1);
+  //
+  // create table portfolio_projects (
+  //   id uuid primary key default gen_random_uuid(),
+  //   title text, category text, image_path text,
+  //   aspect_ratio numeric, sort_order int4, created_at timestamptz default now()
+  // );
+  //
+  // create table testimonials (
+  //   id uuid primary key default gen_random_uuid(),
+  //   quote text, brand_name text, brand_role text, project_tag text, sort_order int4
+  // );
+  //
+  // Row Level Security: enable RLS on all three tables, add a policy
+  // that allows SELECT to everyone (public read for the portfolio site)
+  // and INSERT / UPDATE / DELETE only to authenticated users (this admin).
+  // ---------------------------------------------------------------
+
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY'){
+    document.getElementById('login-msg').textContent = 'Add SUPABASE_URL and SUPABASE_ANON_KEY at the top of the script before logging in.';
+  }
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const loginScreen = document.getElementById('login-screen');
+  const adminShell = document.getElementById('admin-shell');
+
+  async function checkSession(){
+    const { data } = await supabase.auth.getSession();
+    if (data.session){
+      showAdmin();
+    } else {
+      showLogin();
+    }
+  }
+
+  function showLogin(){
+    loginScreen.style.display = 'flex';
+    adminShell.style.display = 'none';
+  }
+
+  function showAdmin(){
+    loginScreen.style.display = 'none';
+    adminShell.style.display = 'flex';
+    loadSiteContent();
+    loadGallery();
+    loadTestimonials();
+  }
+
+  document.getElementById('login-btn').addEventListener('click', async () => {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const msg = document.getElementById('login-msg');
+    msg.textContent = 'Signing in...';
+    msg.style.color = '';
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error){
+      msg.textContent = error.message;
+      msg.style.color = 'var(--danger)';
+      return;
+    }
+    msg.textContent = '';
+    showAdmin();
+  });
+
+  document.getElementById('signout-btn').addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    showLogin();
+  });
+
+  // ---------------- tab navigation ----------------
+  document.querySelectorAll('.nav-btn[data-panel]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav-btn[data-panel]').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.panel).classList.add('active');
+    });
+  });
+
+  // ---------------- site content ----------------
+  async function loadSiteContent(){
+    const { data, error } = await supabase.from('site_content').select('*').eq('id', 1).maybeSingle();
+    if (error){ console.error(error); return; }
+    if (!data) return;
+    const map = {
+      'f-ticket-job': data.ticket_job, 'f-ticket-location': data.ticket_location, 'f-ticket-status': data.ticket_status,
+      'f-hero-title': data.hero_title_html, 'f-hero-subtitle': data.hero_subtitle, 'f-hero-stamp': data.hero_stamp_html,
+      'f-about-photo': data.about_photo_url, 'f-about-caption': data.about_photo_caption, 'f-about-bio': data.about_bio_html,
+      'f-spec-location': data.spec_location, 'f-spec-specialties': data.spec_specialties,
+      'f-spec-tools': data.spec_tools, 'f-spec-availability': data.spec_availability,
+      'f-footer-heading': data.footer_heading_html, 'f-contact-email': data.contact_email,
+      'f-footer-availability': data.footer_availability,
+      'f-social-instagram': data.social_instagram, 'f-social-behance': data.social_behance, 'f-social-linkedin': data.social_linkedin,
+    };
+    Object.entries(map).forEach(([id, value]) => {
+      const el = document.getElementById(id);
+      if (el && value !== undefined && value !== null) el.value = value;
+    });
+  }
+
+  document.getElementById('save-site-btn').addEventListener('click', async () => {
+    const msg = document.getElementById('save-site-msg');
+    msg.textContent = 'Saving...';
+    msg.className = 'save-msg';
+
+    const payload = {
+      id: 1,
+      ticket_job: document.getElementById('f-ticket-job').value,
+      ticket_location: document.getElementById('f-ticket-location').value,
+      ticket_status: document.getElementById('f-ticket-status').value,
+      hero_title_html: document.getElementById('f-hero-title').value,
+      hero_subtitle: document.getElementById('f-hero-subtitle').value,
+      hero_stamp_html: document.getElementById('f-hero-stamp').value,
+      about_photo_url: document.getElementById('f-about-photo').value,
+      about_photo_caption: document.getElementById('f-about-caption').value,
+      about_bio_html: document.getElementById('f-about-bio').value,
+      spec_location: document.getElementById('f-spec-location').value,
+      spec_specialties: document.getElementById('f-spec-specialties').value,
+      spec_tools: document.getElementById('f-spec-tools').value,
+      spec_availability: document.getElementById('f-spec-availability').value,
+      footer_heading_html: document.getElementById('f-footer-heading').value,
+      contact_email: document.getElementById('f-contact-email').value,
+      footer_availability: document.getElementById('f-footer-availability').value,
+      social_instagram: document.getElementById('f-social-instagram').value,
+      social_behance: document.getElementById('f-social-behance').value,
+      social_linkedin: document.getElementById('f-social-linkedin').value,
+    };
+
+    const { error } = await supabase.from('site_content').upsert(payload);
+    if (error){
+      msg.textContent = error.message;
+      msg.className = 'save-msg error';
+      return;
+    }
+    msg.textContent = 'Saved. Refresh the portfolio site to see the changes.';
+    msg.className = 'save-msg success';
+  });
+
+  // ---------------- gallery ----------------
+  async function loadGallery(){
+    const wrap = document.getElementById('gallery-list');
+    wrap.innerHTML = '<p class="empty-note">Loading...</p>';
+    const { data, error } = await supabase.from('portfolio_projects').select('*').order('sort_order', { ascending: true, nullsFirst: false });
+    if (error){ wrap.innerHTML = `<p class="empty-note">Could not load projects. ${error.message}</p>`; return; }
+    if (!data || data.length === 0){ wrap.innerHTML = '<p class="empty-note">No projects yet. Add one above.</p>'; return; }
+
+    wrap.innerHTML = '';
+    data.forEach(p => {
+      const { data: urlData } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(p.image_path);
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <img src="${urlData.publicUrl}" alt="${p.title || ''}">
+        <div class="item-fields">
+          <input type="text" class="e-title" value="${p.title || ''}" placeholder="Title">
+          <select class="e-category">
+            <option value="social" ${p.category === 'social' ? 'selected' : ''}>Social Media</option>
+            <option value="branding" ${p.category === 'branding' ? 'selected' : ''}>Branding</option>
+            <option value="packaging" ${p.category === 'packaging' ? 'selected' : ''}>Packaging</option>
+          </select>
+          <input type="number" step="0.05" class="e-ratio" value="${p.aspect_ratio ?? 1}" placeholder="Ratio">
+          <input type="number" class="e-sort" value="${p.sort_order ?? 0}" placeholder="Sort">
+        </div>
+        <div class="item-actions">
+          <button class="btn btn-outline e-save">Save</button>
+          <button class="btn btn-danger e-delete">Delete</button>
+        </div>
+      `;
+      row.querySelector('.e-save').addEventListener('click', async () => {
+        const { error: updErr } = await supabase.from('portfolio_projects').update({
+          title: row.querySelector('.e-title').value,
+          category: row.querySelector('.e-category').value,
+          aspect_ratio: parseFloat(row.querySelector('.e-ratio').value) || 1,
+          sort_order: parseInt(row.querySelector('.e-sort').value) || 0,
+        }).eq('id', p.id);
+        if (updErr){ alert(updErr.message); return; }
+      });
+      row.querySelector('.e-delete').addEventListener('click', async () => {
+        if (!confirm('Delete this project? This cannot be undone.')) return;
+        await supabase.storage.from(STORAGE_BUCKET).remove([p.image_path]);
+        const { error: delErr } = await supabase.from('portfolio_projects').delete().eq('id', p.id);
+        if (delErr){ alert(delErr.message); return; }
+        loadGallery();
+      });
+      wrap.appendChild(row);
+    });
+  }
+
+  document.getElementById('refresh-gallery-btn').addEventListener('click', loadGallery);
+
+  document.getElementById('add-project-btn').addEventListener('click', async () => {
+    const msg = document.getElementById('add-project-msg');
+    const fileInput = document.getElementById('new-image');
+    const file = fileInput.files[0];
+    const title = document.getElementById('new-title').value;
+    const category = document.getElementById('new-category').value;
+    const ratio = parseFloat(document.getElementById('new-ratio').value) || 1;
+    const sort = parseInt(document.getElementById('new-sort').value) || 0;
+
+    if (!file || !title){
+      msg.textContent = 'Add a title and choose an image file first.';
+      msg.className = 'save-msg error';
+      return;
+    }
+
+    msg.textContent = 'Uploading...';
+    msg.className = 'save-msg';
+
+    const path = `${category}/${Date.now()}-${file.name}`;
+    const { error: upErr } = await supabase.storage.from(STORAGE_BUCKET).upload(path, file);
+    if (upErr){
+      msg.textContent = upErr.message;
+      msg.className = 'save-msg error';
+      return;
+    }
+
+    const { error: insErr } = await supabase.from('portfolio_projects').insert({
+      title, category, image_path: path, aspect_ratio: ratio, sort_order: sort,
+    });
+    if (insErr){
+      msg.textContent = insErr.message;
+      msg.className = 'save-msg error';
+      return;
+    }
+
+    msg.textContent = 'Project added.';
+    msg.className = 'save-msg success';
+    document.getElementById('new-title').value = '';
+    fileInput.value = '';
+    loadGallery();
+  });
+
+  // ---------------- testimonials ----------------
+  async function loadTestimonials(){
+    const wrap = document.getElementById('testimonials-list');
+    wrap.innerHTML = '<p class="empty-note">Loading...</p>';
+    const { data, error } = await supabase.from('testimonials').select('*').order('sort_order', { ascending: true, nullsFirst: false });
+    if (error){ wrap.innerHTML = `<p class="empty-note">Could not load testimonials. ${error.message}</p>`; return; }
+    if (!data || data.length === 0){ wrap.innerHTML = '<p class="empty-note">No testimonials yet. Add one above.</p>'; return; }
+
+    wrap.innerHTML = '';
+    data.forEach(t => {
+      const row = document.createElement('div');
+      row.className = 'item-row testimonial-row';
+      row.innerHTML = `
+        <div class="testimonial-fields">
+          <textarea class="e-quote" placeholder="Quote">${t.quote || ''}</textarea>
+          <input type="text" class="e-brand" value="${t.brand_name || ''}" placeholder="Brand">
+          <input type="text" class="e-role" value="${t.brand_role || ''}" placeholder="Role">
+          <input type="text" class="e-project-tag" value="${t.project_tag || ''}" placeholder="Project Tag">
+          <input type="number" class="e-sort" value="${t.sort_order ?? 0}" placeholder="Sort">
+        </div>
+        <div class="item-actions">
+          <button class="btn btn-outline e-save">Save</button>
+          <button class="btn btn-danger e-delete">Delete</button>
+        </div>
+      `;
+      row.querySelector('.e-save').addEventListener('click', async () => {
+        const { error: updErr } = await supabase.from('testimonials').update({
+          quote: row.querySelector('.e-quote').value,
+          brand_name: row.querySelector('.e-brand').value,
+          brand_role: row.querySelector('.e-role').value,
+          project_tag: row.querySelector('.e-project-tag').value,
+          sort_order: parseInt(row.querySelector('.e-sort').value) || 0,
+        }).eq('id', t.id);
+        if (updErr){ alert(updErr.message); return; }
+      });
+      row.querySelector('.e-delete').addEventListener('click', async () => {
+        if (!confirm('Delete this testimonial?')) return;
+        const { error: delErr } = await supabase.from('testimonials').delete().eq('id', t.id);
+        if (delErr){ alert(delErr.message); return; }
+        loadTestimonials();
+      });
+      wrap.appendChild(row);
+    });
+  }
+
+  document.getElementById('refresh-testimonials-btn').addEventListener('click', loadTestimonials);
+
+  document.getElementById('add-testimonial-btn').addEventListener('click', async () => {
+    const msg = document.getElementById('add-testimonial-msg');
+    const quote = document.getElementById('new-quote').value;
+    const brand = document.getElementById('new-brand').value;
+    const role = document.getElementById('new-role').value;
+    const projectTag = document.getElementById('new-project-tag').value;
+    const sort = parseInt(document.getElementById('new-t-sort').value) || 0;
+
+    if (!quote || !brand){
+      msg.textContent = 'Add at least a quote and a brand name.';
+      msg.className = 'save-msg error';
+      return;
+    }
+
+    const { error } = await supabase.from('testimonials').insert({ quote, brand_name: brand, brand_role: role, project_tag: projectTag, sort_order: sort });
+    if (error){
+      msg.textContent = error.message;
+      msg.className = 'save-msg error';
+      return;
+    }
+
+    msg.textContent = 'Testimonial added.';
+    msg.className = 'save-msg success';
+    document.getElementById('new-quote').value = '';
+    document.getElementById('new-brand').value = '';
+    document.getElementById('new-role').value = '';
+    document.getElementById('new-project-tag').value = '';
+    loadTestimonials();
+  });
+
+  checkSession();
+</script>
+
+</body>
+</html>

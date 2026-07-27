@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odusina Isaac, Graphic Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A1030;
+    --paper:#FBF7FF;
+    --paper-soft:#F1E6FF;
+    --persimmon:#FF3D7A;
+    --teal:#1FC6E0;
+    --mustard:#FFD23F;
+    --violet:#8A3FFC;
+    --line: rgba(26,16,48,0.14);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    overflow-x:hidden;
+  }
+
+  ::selection{ background:var(--persimmon); color:var(--paper); }
+
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:-0.02em; }
+
+  .mono{ font-family:'IBM Plex Mono', monospace; text-transform:uppercase; letter-spacing:0.08em; }
+
+  a{ color:inherit; text-decoration:none; }
+
+  /* ---------- registration mark / crop mark decor ---------- */
+  .reg-mark{
+    position:relative;
+    width:16px;height:16px;
+    display:inline-block;
+  }
+  .reg-mark::before, .reg-mark::after{
+    content:"";
+    position:absolute;
+    background:var(--ink);
+  }
+  .reg-mark::before{ top:50%; left:0; width:100%; height:1px; transform:translateY(-50%);}
+  .reg-mark::after{ left:50%; top:0; height:100%; width:1px; transform:translateX(-50%);}
+
+  .crop{ position:absolute; width:22px; height:22px; pointer-events:none; opacity:0.55; }
+  .crop::before, .crop::after{ content:""; position:absolute; background:var(--ink); }
+  .crop::before{ width:100%; height:1px; top:50%; }
+  .crop::after{ height:100%; width:1px; left:50%; }
+  .crop.tl{ top:14px; left:14px; }
+  .crop.tr{ top:14px; right:14px; }
+  .crop.bl{ bottom:14px; left:14px; }
+  .crop.br{ bottom:14px; right:14px; }
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 22px clamp(20px, 4vw, 56px);
+    background: rgba(251,247,255,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .logo{ font-size:1.15rem; font-weight:700; display:flex; align-items:center; gap:10px; }
+  .logo .reg-mark{ transform: scale(0.85); }
+  nav.links{ display:flex; gap:clamp(16px,3vw,34px); font-size:0.82rem; }
+  nav.links a{ position:relative; padding-bottom:2px; }
+  nav.links a::after{
+    content:""; position:absolute; left:0; bottom:-3px; width:0; height:1px; background:var(--persimmon);
+    transition:width .25s ease;
+  }
+  nav.links a:hover::after{ width:100%; }
+
+  /* ---------- hero: print job ticket ---------- */
+  .hero{
+    position:relative;
+    padding: 150px clamp(20px,4vw,56px) 90px;
+    border-bottom: 1px solid var(--line);
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 12% 15%, rgba(255,61,122,0.16) 0%, transparent 42%),
+      radial-gradient(circle at 88% 25%, rgba(31,198,224,0.18) 0%, transparent 40%),
+      radial-gradient(circle at 60% 95%, rgba(255,210,63,0.16) 0%, transparent 38%);
+  }
+  .ticket{
+    position:relative;
+    border:2px solid var(--ink);
+    padding: 40px clamp(20px,4vw,60px);
+    background: rgba(251,247,255,0.6);
+  }
+  .ticket-row{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    font-size:0.72rem;
+    padding-bottom:18px; margin-bottom:34px;
+    border-bottom: 1px dashed var(--line);
+    flex-wrap:wrap; gap:10px;
+  }
+  .ticket-row span{ opacity:0.72; }
+
+  .hero h1{
+    font-size: clamp(2.6rem, 8vw, 6.4rem);
+    line-height:0.94;
+    text-transform:uppercase;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-family:'Instrument Serif', serif;
+    font-weight:400;
+    color:var(--persimmon);
+    text-transform:none;
+  }
+
+  .hero-sub{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-top:36px; padding-top:26px; border-top:1px dashed var(--line);
+    gap: 24px; flex-wrap:wrap;
+  }
+  .hero-sub p{ max-width:440px; font-size:1rem; line-height:1.55; color:#3a352c; }
+
+  .stamp{
+    width:118px; height:118px;
+    border:2px solid var(--persimmon);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    color:var(--persimmon);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.62rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    transform: rotate(-11deg);
+    flex-shrink:0;
+    line-height:1.3;
+    position:relative;
+  }
+  .stamp::before{
+    content:""; position:absolute; inset:8px; border:1px solid var(--teal); border-radius:50%; opacity:0.6;
+  }
+
+  /* ---------- section shell ---------- */
+  section{ padding: 90px clamp(20px,4vw, 56px); position:relative; }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:44px; gap:20px; flex-wrap:wrap;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom:18px;
+  }
+  .section-head .tag{ font-size:0.72rem; opacity:0.65; }
+  .section-head h2{ font-size: clamp(1.8rem, 4vw, 2.8rem); text-transform:uppercase; }
+
+  /* ---------- filter tabs ---------- */
+  .filters{
+    display:flex; gap:10px; flex-wrap:wrap; margin-bottom:44px;
+    position:sticky; top:78px; z-index:40;
+    background:var(--paper);
+    padding:12px 0;
+  }
+  .filter-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem;
+    text-transform:uppercase; letter-spacing:0.06em;
+    padding:10px 18px;
+    border:1px solid var(--ink);
+    border-radius:30px;
+    cursor:pointer;
+    background:transparent;
+    transition: all .2s ease;
+  }
+  .filter-btn:hover{ background:var(--paper-soft); border-color:var(--persimmon); }
+  .filter-btn.active{
+    background: linear-gradient(100deg, var(--persimmon) 0%, var(--violet) 100%);
+    border-color: transparent;
+    color:var(--paper);
+  }
+
+  /* ---------- masonry ---------- */
+  .masonry{
+    column-count:4;
+    column-gap:18px;
+  }
+  @media (max-width:1100px){ .masonry{ column-count:3; } }
+  @media (max-width:760px){ .masonry{ column-count:2; } }
+  @media (max-width:480px){ .masonry{ column-count:1; } }
+
+  .card{
+    break-inside:avoid;
+    margin-bottom:18px;
+    position:relative;
+    border:1px solid var(--ink);
+    background:var(--paper-soft);
+    overflow:hidden;
+    cursor:default;
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .card:hover{
+    transform: translateY(-4px);
+    border-color: var(--persimmon);
+    box-shadow: 6px 6px 0px var(--teal);
+  }
+  .card img{ display:block; width:100%; height:auto; }
+  .card-info{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:14px 16px;
+    background: linear-gradient(0deg, rgba(23,20,15,0.92) 0%, rgba(23,20,15,0) 100%);
+    color:var(--paper);
+    opacity:0; transform: translateY(8px);
+    transition: all .28s ease;
+  }
+  .card:hover .card-info{ opacity:1; transform:translateY(0); }
+  .card-info .cat{ font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--mustard); display:block; margin-bottom:4px;}
+  .card-info .title{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:0.92rem; }
+  .card.hide{ display:none; }
+
+  /* ---------- about ---------- */
+  .about{
+    border-top:1px solid var(--line);
+    background:
+      radial-gradient(circle at 85% 10%, rgba(255,61,122,0.28) 0%, transparent 45%),
+      radial-gradient(circle at 5% 90%, rgba(31,198,224,0.24) 0%, transparent 42%),
+      var(--ink);
+    color:var(--paper);
+  }
+  .about .section-head{ border-bottom-color: rgba(242,237,225,0.25); }
+  .about-grid{
+    display:grid; grid-template-columns: 230px 1.15fr 1fr; gap:50px; align-items:start;
+  }
+  @media (max-width:1000px){ .about-grid{ grid-template-columns: 1fr; } }
+  .about-grid p{ font-size:1.05rem; line-height:1.7; color:rgba(242,237,225,0.82); max-width:560px; }
+  .about-grid p + p{ margin-top:18px; }
+  .specs{ display:flex; flex-direction:column; gap:0; border-top:1px solid rgba(242,237,225,0.25); }
+  .spec-row{
+    display:flex; justify-content:space-between; padding:16px 0;
+    border-bottom:1px solid rgba(242,237,225,0.25);
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem;
+    text-transform:uppercase; letter-spacing:0.04em;
+  }
+  .spec-row span:last-child{ color:var(--mustard); text-align:right; }
+
+  /* ---------- picture frame ---------- */
+  .frame{
+    background:var(--paper);
+    padding:14px 14px 50px;
+    width:100%;
+    max-width:230px;
+    margin:0 auto;
+    position:relative;
+    transform:rotate(-4deg);
+    box-shadow:9px 9px 0px var(--persimmon);
+  }
+  .frame::before{
+    content:"";
+    position:absolute; top:-16px; left:50%;
+    width:78px; height:28px;
+    background:rgba(255,210,63,0.88);
+    border:1px solid rgba(26,16,48,0.1);
+    transform:translateX(-50%) rotate(-3deg);
+  }
+  .frame img{ display:block; width:100%; border:1px solid var(--ink); }
+  .frame .frame-caption{
+    position:absolute; bottom:16px; left:0; right:0; text-align:center;
+    font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--ink);
+  }
+
+  /* ---------- testimonials ---------- */
+  .testimonials{ border-top:1px solid var(--line); }
+  .testimonials-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:24px;
+  }
+  .testimonial-card{
+    background:var(--paper-soft);
+    border:1px solid var(--ink);
+    padding:32px 28px;
+    position:relative;
+    display:flex; flex-direction:column; justify-content:space-between; min-height:250px;
+  }
+  .approved-tag{
+    display:inline-block;
+    font-size:0.6rem;
+    padding:5px 12px;
+    border:1px solid var(--ink);
+    border-radius:30px;
+    transform:rotate(-3deg);
+    margin-bottom:14px;
+    align-self:flex-start;
+  }
+  .testimonial-card:nth-child(1) .approved-tag{ border-color:var(--persimmon); color:var(--persimmon); }
+  .testimonial-card:nth-child(2) .approved-tag{ border-color:var(--teal); color:var(--teal); }
+  .testimonial-card:nth-child(3) .approved-tag{ border-color:var(--violet); color:var(--violet); }
+  .testimonial-card:nth-child(4) .approved-tag{ border-color:#E8A400; color:#E8A400; }
+  .testimonial-card:nth-child(5) .approved-tag{ border-color:var(--persimmon); color:var(--persimmon); }
+  .testimonial-card .quote-mark{
+    font-family:'Instrument Serif', serif; font-style:italic; font-size:3.2rem;
+    line-height:1; margin-bottom:12px; display:block;
+  }
+  .testimonial-card:nth-child(1) .quote-mark{ color:var(--persimmon); }
+  .testimonial-card:nth-child(2) .quote-mark{ color:var(--teal); }
+  .testimonial-card:nth-child(3) .quote-mark{ color:var(--violet); }
+  .testimonial-card:nth-child(4) .quote-mark{ color:#E8A400; }
+  .testimonial-card:nth-child(5) .quote-mark{ color:var(--persimmon); }
+  .testimonial-card p.quote{ font-size:0.96rem; line-height:1.6; color:#332b45; margin-bottom:22px; }
+  .brand-row{
+    display:flex; flex-direction:column; gap:2px;
+    border-top:1px dashed var(--line); padding-top:14px;
+  }
+  .brand-name{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:0.88rem; text-transform:uppercase; }
+  .brand-role{ font-family:'IBM Plex Mono', monospace; font-size:0.62rem; text-transform:uppercase; opacity:0.6; }
+  .project-tag{ font-family:'IBM Plex Mono', monospace; font-size:0.6rem; text-transform:uppercase; opacity:0.5; margin-top:6px; display:block; }
+
+  /* ---------- process strip ---------- */
+  .process{ display:flex; flex-wrap:wrap; gap:0; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); }
+  .proc-step{
+    flex:1 1 220px;
+    padding:34px 26px;
+    border-right:1px solid var(--line);
+  }
+  .proc-step:last-child{ border-right:none; }
+  .proc-step .num{ font-family:'Instrument Serif',serif; font-style:italic; font-size:2.4rem; display:block; margin-bottom:10px;}
+  .proc-step:nth-child(1) .num{ color:var(--persimmon); }
+  .proc-step:nth-child(2) .num{ color:var(--teal); }
+  .proc-step:nth-child(3) .num{ color:var(--violet); }
+  .proc-step:nth-child(4) .num{ color:#E8A400; }
+  .proc-step h3{ font-size:1rem; text-transform:uppercase; margin-bottom:8px; }
+  .proc-step p{ font-size:0.86rem; color:#4a4438; line-height:1.5; }
+
+  /* ---------- contact / footer ---------- */
+  footer{
+    padding: 100px clamp(20px,4vw,56px) 50px;
+    position:relative;
+  }
+  footer h2{
+    font-size: clamp(2.2rem, 7vw, 5rem);
+    text-transform:uppercase;
+    max-width:900px;
+    line-height:0.98;
+  }
+  footer h2 em{ font-style:italic; font-family:'Instrument Serif',serif; color:var(--persimmon); }
+  .contact-row{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-top:50px; padding-top:26px; border-top:1px solid var(--ink);
+    flex-wrap:wrap; gap:24px;
+  }
+  .contact-links{ display:flex; gap:26px; flex-wrap:wrap; font-size:0.85rem; }
+  .contact-links a{ border-bottom:1px solid var(--ink); padding-bottom:2px; }
+  .contact-links a:hover{ border-color:var(--persimmon); color:var(--persimmon); }
+  .foot-meta{ font-family:'IBM Plex Mono',monospace; font-size:0.68rem; opacity:0.6; text-transform:uppercase; }
+  .bottom-bar{
+    margin-top:60px; padding-top:20px; border-top:1px dashed var(--line);
+    display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:0.66rem;
+    text-transform:uppercase; opacity:0.6; flex-wrap:wrap; gap:10px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span class="reg-mark"></span>ODUSINA ISAAC</div>
+  <nav class="links">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="ticket">
+    <div class="crop tl"></div><div class="crop tr"></div><div class="crop bl"></div><div class="crop br"></div>
+    <div class="ticket-row mono">
+      <span id="ticket-job">Job No. 2026 / 014</span>
+      <span id="ticket-location">Based in Lagos, NG</span>
+      <span id="ticket-status">Status: Open for Commissions</span>
+    </div>
+    <h1 id="hero-title">Graphic<br>Design <em>for brands</em><br>that move.</h1>
+    <div class="hero-sub">
+      <p id="hero-subtitle">I design social media systems, brand identities, and product packaging, built to hold up on a shelf, a scroll, and everywhere in between.</p>
+      <div class="stamp" id="hero-stamp">Approved<br>for<br>Production</div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="section-head">
+    <h2>Selected Work</h2>
+    <span class="tag mono">03 Disciplines / 2023 to 2026</span>
+  </div>
+
+  <div class="filters mono" id="filters">
+    <button class="filter-btn active" data-filter="all">All Work</button>
+    <button class="filter-btn" data-filter="social">Social Media</button>
+    <button class="filter-btn" data-filter="branding">Branding</button>
+    <button class="filter-btn" data-filter="packaging">Packaging</button>
+  </div>
+
+  <div class="masonry" id="masonry"></div>
+</section>
+
+<section class="process">
+  <div class="proc-step">
+    <span class="num">01</span>
+    <h3>Discover</h3>
+    <p>Audit the brand, the audience, and the shelf or feed it has to compete on.</p>
+  </div>
+  <div class="proc-step">
+    <span class="num">02</span>
+    <h3>Direction</h3>
+    <p>Palette, type, and concept explorations, narrowed to one strong point of view.</p>
+  </div>
+  <div class="proc-step">
+    <span class="num">03</span>
+    <h3>Design</h3>
+    <p>Full system build out: templates, marks, structural packaging or content grids.</p>
+  </div>
+  <div class="proc-step">
+    <span class="num">04</span>
+    <h3>Deliver</h3>
+    <p>Print ready files, social kits, or brand guidelines, handed off ready for production.</p>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="section-head">
+    <h2>About</h2>
+    <span class="tag mono">Designer / Art Director</span>
+  </div>
+  <div class="about-grid">
+    <div class="frame">
+      <img src="https://picsum.photos/seed/isaac-portrait/400/500" alt="Odusina Isaac" id="about-photo">
+      <span class="frame-caption" id="about-photo-caption">Isaac, at work</span>
+    </div>
+    <div id="about-bio">
+      <p>I'm Isaac, a brand designer working across social media design, brand identity, and product packaging. I like design that has a job to do: a post that stops a thumb, a logo that reads at a glance, a box that sells itself on a crowded shelf.</p>
+      <p>Every project starts the same way, understanding what the brand needs to say and to whom, then finding the palette, type, and structure that says it without shouting.</p>
+    </div>
+    <div class="specs">
+      <div class="spec-row"><span>Location</span><span id="spec-location">Lagos, Nigeria</span></div>
+      <div class="spec-row"><span>Specialties</span><span id="spec-specialties">Social / Branding / Packaging</span></div>
+      <div class="spec-row"><span>Tools</span><span id="spec-tools">Figma, CorelDraw, Photoshop, Canva</span></div>
+      <div class="spec-row"><span>Availability</span><span id="spec-availability">Open for Projects</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials" id="testimonials">
+  <div class="section-head">
+    <h2>What Clients Say</h2>
+    <span class="tag mono">Real Feedback / 3 Brands</span>
+  </div>
+  <div class="testimonials-grid" id="testimonials-grid">
+    <div class="testimonial-card">
+      <div>
+        <span class="approved-tag mono">Approved</span>
+        <span class="quote-mark">"</span>
+        <p class="quote">He asked questions our last agency never asked, mostly about print costs. The pack came in under budget and looks better than the brief.</p>
+      </div>
+      <div class="brand-row">
+        <span class="brand-name">Adaeze Okonkwo</span>
+        <span class="brand-role">Founder, Zuri Foods</span>
+        <span class="project-tag">Packaging and identity, 2025</span>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div>
+        <span class="approved-tag mono">Approved</span>
+        <span class="quote-mark">"</span>
+        <p class="quote">We went from a market stall to three supermarket listings in eight months. The labels did a lot of that work.</p>
+      </div>
+      <div class="brand-row">
+        <span class="brand-name">Tunde Ajala</span>
+        <span class="brand-role">Director, Ijebu Loom</span>
+        <span class="project-tag">Label system, 2025</span>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div>
+        <span class="approved-tag mono">Approved</span>
+        <span class="quote-mark">"</span>
+        <p class="quote">Fast, calm and completely on top of the print side. I have not had to chase him once, which I cannot say about anyone else we use.</p>
+      </div>
+      <div class="brand-row">
+        <span class="brand-name">Chinelo Nwosu</span>
+        <span class="brand-role">Brand lead, Ripple Drinks</span>
+        <span class="project-tag">Social and media, 2024</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <h2 id="footer-heading">Let's build<br>your next <em>campaign.</em></h2>
+  <div class="contact-row">
+    <div class="contact-links">
+      <a href="mailto:hello@odusinaisaac.com" id="footer-email">hello@odusinaisaac.com</a>
+      <a href="#" id="social-instagram">Instagram</a>
+      <a href="#" id="social-behance">Behance</a>
+      <a href="#" id="social-linkedin">LinkedIn</a>
+    </div>
+    <div class="foot-meta" id="footer-availability">Currently taking on Q3 2026 projects</div>
+  </div>
+  <div class="bottom-bar">
+    <span>© 2026 Odusina Isaac</span>
+    <span>Designed &amp; Built in Lagos</span>
+  </div>
+</footer>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  // ---------------------------------------------------------------
+  // SUPABASE CONFIG, fill these in with your project's values.
+  // Project Settings → API → Project URL / anon public key.
+  // ---------------------------------------------------------------
+  const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+  // Table: portfolio_projects
+  //   id            uuid / int8, primary key
+  //   title         text
+  //   category      text   -- one of: 'social' | 'branding' | 'packaging'
+  //   image_path    text   -- file path inside the storage bucket (e.g. "social/01.jpg")
+  //   aspect_ratio  numeric -- width / height, e.g. 1.25  (optional, defaults to 1)
+  //   sort_order    int4    -- optional, lower shows first
+  //
+  // Storage bucket: "portfolio" (must be set to Public)
+
+  const STORAGE_BUCKET = 'portfolio';
+  const TABLE_NAME = 'portfolio_projects';
+
+  const catLabel = { social:'Social Media', branding:'Branding', packaging:'Packaging' };
+  const grid = document.getElementById('masonry');
+  const baseWidth = 480;
+
+  function renderCard(p){
+    const ratio = p.aspect_ratio || 1;
+    const h = Math.round(baseWidth / ratio);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.cat = p.category;
+    card.innerHTML = `
+      <img src="${p.image_url}" alt="${p.title}" loading="lazy" width="${baseWidth}" height="${h}">
+      <div class="card-info">
+        <span class="cat">${catLabel[p.category] || p.category}</span>
+        <span class="title">${p.title}</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  }
+
+  function renderEmptyState(message){
+    grid.innerHTML = `<p class="mono" style="font-size:0.75rem;opacity:0.6;">${message}</p>`;
+  }
+
+  const configured = !(SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY');
+  const supabase = configured ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+  async function loadProjects(){
+    if (!supabase){
+      renderEmptyState('Connect your Supabase project. Add SUPABASE_URL and SUPABASE_ANON_KEY at the top of the script to load your work.');
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from(TABLE_NAME)
+      .select('*')
+      .order('sort_order', { ascending: true, nullsFirst: false });
+
+    if (error){
+      console.error('Supabase fetch error:', error);
+      renderEmptyState('Could not load projects from Supabase. Check the console for details.');
+      return;
+    }
+
+    if (!data || data.length === 0){
+      renderEmptyState('No projects yet. Add rows to the portfolio_projects table to see them here.');
+      return;
+    }
+
+    grid.innerHTML = '';
+    data.forEach(p => {
+      const { data: urlData } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(p.image_path);
+      renderCard({ ...p, image_url: urlData.publicUrl });
+    });
+  }
+
+  // ---------------------------------------------------------------
+  // SITE CONTENT: pulled from a single row table called site_content.
+  // Falls back to whatever text is already written in the HTML
+  // when Supabase is not connected, or the row does not exist yet.
+  // ---------------------------------------------------------------
+  function setText(id, value){
+    if (value === undefined || value === null || value === '') return;
+    const el = document.getElementById(id);
+    if (el) el.innerText = value;
+  }
+  function setHtml(id, value){
+    if (value === undefined || value === null || value === '') return;
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = value;
+  }
+  function setHref(id, value){
+    if (value === undefined || value === null || value === '') return;
+    const el = document.getElementById(id);
+    if (el) el.href = value;
+  }
+  function setSrc(id, value){
+    if (value === undefined || value === null || value === '') return;
+    const el = document.getElementById(id);
+    if (el) el.src = value;
+  }
+
+  async function loadSiteContent(){
+    if (!supabase) return;
+
+    const { data, error } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('id', 1)
+      .maybeSingle();
+
+    if (error){
+      console.error('Site content fetch error:', error);
+      return;
+    }
+    if (!data) return;
+
+    setText('ticket-job', data.ticket_job);
+    setText('ticket-location', data.ticket_location);
+    setText('ticket-status', data.ticket_status);
+    setHtml('hero-title', data.hero_title_html);
+    setText('hero-subtitle', data.hero_subtitle);
+    setHtml('hero-stamp', data.hero_stamp_html);
+
+    setSrc('about-photo', data.about_photo_url);
+    setText('about-photo-caption', data.about_photo_caption);
+    setHtml('about-bio', data.about_bio_html);
+    setText('spec-location', data.spec_location);
+    setText('spec-specialties', data.spec_specialties);
+    setText('spec-tools', data.spec_tools);
+    setText('spec-availability', data.spec_availability);
+
+    setHtml('footer-heading', data.footer_heading_html);
+    setText('footer-email', data.contact_email);
+    setHref('footer-email', data.contact_email ? `mailto:${data.contact_email}` : undefined);
+    setHref('social-instagram', data.social_instagram);
+    setHref('social-behance', data.social_behance);
+    setHref('social-linkedin', data.social_linkedin);
+    setText('footer-availability', data.footer_availability);
+  }
+
+  // ---------------------------------------------------------------
+  // TESTIMONIALS: pulled from a testimonials table, ordered by
+  // sort_order. Keeps the current cards on screen if the table
+  // is empty or Supabase is not connected yet.
+  // ---------------------------------------------------------------
+  async function loadTestimonials(){
+    if (!supabase) return;
+    const wrap = document.getElementById('testimonials-grid');
+
+    const { data, error } = await supabase
+      .from('testimonials')
+      .select('*')
+      .order('sort_order', { ascending: true, nullsFirst: false });
+
+    if (error){
+      console.error('Testimonials fetch error:', error);
+      return;
+    }
+    if (!data || data.length === 0) return;
+
+    wrap.innerHTML = '';
+    data.forEach(t => {
+      const card = document.createElement('div');
+      card.className = 'testimonial-card';
+      card.innerHTML = `
+        <div>
+          <span class="approved-tag mono">Approved</span>
+          <span class="quote-mark">"</span>
+          <p class="quote">${t.quote}</p>
+        </div>
+        <div class="brand-row">
+          <span class="brand-name">${t.brand_name}</span>
+          <span class="brand-role">${t.brand_role || ''}</span>
+          ${t.project_tag ? `<span class="project-tag">${t.project_tag}</span>` : ''}
+        </div>
+      `;
+      wrap.appendChild(card);
+    });
+  }
+
+  document.getElementById('filters').addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if(!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.card').forEach(c => {
+      c.classList.toggle('hide', f !== 'all' && c.dataset.cat !== f);
+    });
+  });
+
+  loadProjects();
+  loadSiteContent();
+  loadTestimonials();
+</script>
+
+</body>
+</html>
