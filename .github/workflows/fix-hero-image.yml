@@ -1,0 +1,32 @@
+name: Fix hero portrait
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-hero:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Point hero to corrected portrait and preserve natural proportions
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          s = s.replace('assets/odusina-isaac-headshot.webp', 'assets/odusina-isaac-headshot.jpg')
+          s = s.replace(".portrait-frame{background:#e7e7e1;border:1px solid var(--ink);aspect-ratio:1/1;overflow:hidden;position:relative;box-shadow:18px 18px 0 var(--green)}.portrait-frame img{width:100%;height:100%;object-fit:cover;object-position:center center}", ".portrait-frame{background:#e7e7e1;border:1px solid var(--ink);overflow:hidden;position:relative;box-shadow:18px 18px 0 var(--green)}.portrait-frame img{width:100%;height:auto;display:block}")
+          p.write_text(s)
+          PY
+      - name: Remove one-time workflow and commit
+        run: |
+          rm .github/workflows/fix-hero-image.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/fix-hero-image.yml
+          git commit -m "Replace deformed hero portrait with corrected image"
+          git push
