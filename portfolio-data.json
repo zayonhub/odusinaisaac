@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "source": "Google Drive / Design exports",
+  "projects": [
+    {
+      "id": "wingate-exotic-hotel",
+      "title": "Wingate Exotic Hotel",
+      "category": "social",
+      "categoryLabel": "Social Media & Campaigns",
+      "summary": "A connected hospitality campaign and promotional design system.",
+      "role": "Graphic Design · Visual Direction",
+      "deliverables": "Social Media · Email Graphics · Promotional Design",
+      "images": [
+        "assets/portfolio/social-media/wingate-exotic-hotel/wingate-email.webp",
+        "assets/portfolio/social-media/wingate-exotic-hotel/wingate-january-promo.webp",
+        "assets/portfolio/social-media/wingate-exotic-hotel/wingate-hotelcs.webp"
+      ],
+      "driveSourceIds": [
+        "1llsCSkZUpisy9ZN0ZxG5KEWegVt7b-ja",
+        "1dBcnhgC-h_w_3wXG8fTNxVNEkth-1X3C",
+        "1CyCv-cQeBHtkUPR1YM3XatUcH2F3j6Kt"
+      ],
+      "sortOrder": 10
+    },
+    {
+      "id": "yellow-yolk-feeds",
+      "title": "Yellow Yolk Feeds",
+      "category": "packaging",
+      "categoryLabel": "Packaging",
+      "summary": "Feed packaging developed as a practical branded product system.",
+      "role": "Packaging Design · Visual Direction",
+      "deliverables": "Packaging · Sack Design · Production Artwork",
+      "images": [
+        "assets/portfolio/packaging/yellow-yolk-feeds/yellow-yolk-feeds-bag-a.webp",
+        "assets/portfolio/packaging/yellow-yolk-feeds/yellow-yolk-feeds-bag-b.webp"
+      ],
+      "driveSourceIds": [
+        "1-rovz18qP2rQbK-8tJrX_VV5OFyksEAt",
+        "1MAQj6yu2dKvrbyk2gXdXm9xHwO3WcXdo"
+      ],
+      "sortOrder": 20
+    },
+    {
+      "id": "foot-impact",
+      "title": "Foot Impact",
+      "category": "branding",
+      "categoryLabel": "Brand Identity",
+      "summary": "Identity work for a public-health focused organisation.",
+      "role": "Brand Identity · Graphic Design",
+      "deliverables": "Logo · Brand Assets",
+      "images": ["assets/portfolio/branding/foot-impact/foot-impact-logo.webp"],
+      "driveSourceIds": ["1106YOGLmFQ9_G5i9DC4N1PaHu7oDitr-"],
+      "sortOrder": 30
+    },
+    {
+      "id": "sparkles-packaging",
+      "title": "Sparkles Packaging",
+      "category": "branding",
+      "categoryLabel": "Brand Identity",
+      "summary": "Selected identity asset for Sparkles Packaging.",
+      "role": "Brand Identity · Graphic Design",
+      "deliverables": "Logo · Brand Asset",
+      "images": ["assets/portfolio/branding/sparkles-packaging/sparkles-logo-c.webp"],
+      "driveSourceIds": ["1TTl4G78G1vBZc0qG2SiH8TZPt-YcWzBt"],
+      "sortOrder": 40
+    }
+  ],
+  "siteContent": {
+    "contactEmail": "",
+    "testimonials": []
+  }
+}
