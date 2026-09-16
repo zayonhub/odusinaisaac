@@ -12,30 +12,278 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f7f7f4;--paper:#fff;--ink:#101010;--muted:#686864;--line:#d8d8d1;--wine:#7A1F3D;--wine-deep:#5b142c;--pale:#F3D8E2;--soft:#ecece6;--max:1280px}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.55}body.lock{overflow:hidden}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}img{max-width:100%}.wrap{width:min(calc(100% - 48px),var(--max));margin:auto}.mono{font:700 10px 'Space Mono',monospace;letter-spacing:.11em;text-transform:uppercase}.eyebrow{color:var(--wine);margin-bottom:18px}.section{padding:118px 0}.section-title{font:800 clamp(44px,6vw,82px)/.93 'Manrope';letter-spacing:-.058em}.section-intro{max-width:610px;color:var(--muted);font-size:18px}.rule{border-top:1px solid var(--line)}.topbar{position:fixed;inset:0 0 auto;z-index:50;background:#f7f7f4e8;backdrop-filter:blur(16px);border-bottom:1px solid #11111112}.nav{height:76px;display:flex;align-items:center;justify-content:space-between}.brand{font:800 18px 'Manrope';letter-spacing:-.04em}.brand span{color:var(--wine)}.navlinks{display:flex;gap:30px;font-size:13px;font-weight:600}.navlinks a{opacity:.62;transition:.2s}.navlinks a:hover{opacity:1}.nav-cta{background:var(--ink);color:#fff;border-radius:999px;padding:11px 17px;font-size:12px;font-weight:700}.hero{padding:158px 0 94px}.hero-grid{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(320px,.72fr);gap:clamp(48px,7vw,96px);align-items:end}.hero h1{font:800 clamp(58px,8vw,112px)/.89 'Manrope';letter-spacing:-.072em;max-width:920px;text-wrap:balance}.hero h1 .outline{color:transparent;-webkit-text-stroke:2px var(--ink)}.hero h1 em{font-style:normal;color:var(--wine)}.hero-copy{margin-top:31px;max-width:610px}.hero-copy p{font-size:19px;color:#3f3f3b;max-width:560px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:29px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 19px;border:1px solid var(--ink);border-radius:999px;font-weight:700;font-size:13px;background:transparent;cursor:pointer;transition:.2s}.btn:hover{transform:translateY(-1px)}.btn.primary{background:var(--ink);color:#fff}.hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:42px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted)}.hero-meta strong{display:block;color:var(--ink);margin-top:5px;font-size:13px}.portrait{position:relative;width:100%;max-width:430px;margin-left:auto}.portrait-frame{background:#e7e7e1;border:1px solid var(--ink);overflow:hidden;position:relative;box-shadow:18px 18px 0 var(--wine)}.portrait-frame img{width:100%;height:auto;display:block}.portrait-tag{position:absolute;left:-25px;bottom:25px;background:var(--ink);color:#fff;padding:13px 16px;font:700 10px 'Space Mono';text-transform:uppercase;letter-spacing:.08em;transform:rotate(-3deg)}.statement-strip{border-block:1px solid var(--line)}.statement-inner{display:grid;grid-template-columns:repeat(4,1fr)}.statement-item{padding:18px 24px;border-right:1px solid var(--line);font:700 10px 'Space Mono';letter-spacing:.1em;text-transform:uppercase}.statement-item:last-child{border-right:0}.statement-item span{color:var(--wine);margin-right:8px}.work-head{display:grid;grid-template-columns:1fr .75fr;gap:50px;align-items:end;margin-bottom:48px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px}.filter{border:1px solid var(--line);background:transparent;border-radius:999px;padding:9px 15px;cursor:pointer;font-size:12px;font-weight:700}.filter.active,.filter:hover{background:var(--ink);color:#fff;border-color:var(--ink)}.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.project-card{background:var(--paper);border:1px solid var(--line);border-radius:22px;overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s}.project-card:hover{transform:translateY(-5px);box-shadow:0 22px 48px #00000010}.project-card:first-child{grid-column:1/-1}.project-media{position:relative;overflow:hidden;background:#e8e8e3;aspect-ratio:4/3}.project-card:first-child .project-media{aspect-ratio:16/7.5}.project-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s}.project-card:hover .project-media img{transform:scale(1.018)}.project-index{position:absolute;top:18px;left:18px;background:#f7f7f4e8;backdrop-filter:blur(10px);border:1px solid #1112;border-radius:999px;padding:8px 11px}.project-info{padding:25px 26px 27px}.project-kicker{display:flex;justify-content:space-between;gap:18px;color:var(--wine);margin-bottom:10px}.project-title{font:700 clamp(25px,3vw,38px)/1 'Manrope';letter-spacing:-.045em}.project-summary{font-size:14px;color:var(--muted);margin-top:12px;max-width:650px}.project-foot{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-top:21px;padding-top:16px;border-top:1px solid var(--line)}.project-role{font-size:12px;color:var(--muted)}.project-link{font-size:12px;font-weight:700}.empty{padding:42px;border:1px dashed var(--line);border-radius:18px;color:var(--muted);grid-column:1/-1}.gallery-foot{display:flex;justify-content:center;margin-top:36px}.manifesto{background:var(--ink);color:#fff}.manifesto-grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:85px}.manifesto .eyebrow{color:var(--pale)}.manifesto-copy{font:700 clamp(30px,4.2vw,58px)/1.06 'Manrope';letter-spacing:-.045em}.manifesto-copy em{color:var(--pale);font-style:normal}.principles{border-top:1px solid #333;margin-top:58px}.principle{display:grid;grid-template-columns:70px .6fr 1.4fr;gap:28px;padding:27px 0;border-bottom:1px solid #333}.principle h3{font:700 20px 'Manrope'}.principle p{color:#aaa;max-width:620px}.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);border-block:1px solid var(--line)}.proof-cell{padding:48px 30px;border-right:1px solid var(--line)}.proof-cell:last-child{border-right:0}.proof-number{font:800 clamp(48px,6vw,76px)/1 'Manrope';letter-spacing:-.06em}.proof-label{color:var(--muted);margin-top:9px;max-width:270px}.about{background:#ecece7}.about-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:86px}.about-copy{font-size:21px;line-height:1.58;max-width:760px}.about-copy p+p{margin-top:19px}.about-notes{display:grid;grid-template-columns:repeat(2,1fr);margin-top:40px;border:1px solid var(--line)}.about-note{padding:22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.about-note:nth-child(even){border-right:0}.about-note:nth-last-child(-n+2){border-bottom:0}.about-note span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.09em}.about-note strong{display:block;margin-top:6px;font-size:14px}.capability-grid{display:grid;grid-template-columns:repeat(2,1fr);margin-top:58px;border-top:1px solid var(--line)}.capability{padding:34px 28px 36px 0;border-bottom:1px solid var(--line)}.capability:nth-child(odd){border-right:1px solid var(--line)}.capability:nth-child(even){padding-left:28px}.capability-num{color:var(--wine);margin-bottom:32px}.capability h3{font:700 30px 'Manrope';letter-spacing:-.035em}.capability p{color:var(--muted);margin-top:9px;max-width:500px}.process-grid{display:grid;grid-template-columns:repeat(3,1fr);margin-top:55px;border-block:1px solid var(--line)}.step{padding:31px 24px;border-right:1px solid var(--line)}.step:last-child{border-right:0}.step-no{color:var(--wine)}.step h3{font:700 22px 'Manrope';margin:44px 0 8px}.step p{color:var(--muted);font-size:14px}.testimonials{background:#f0f0eb}.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}.quote{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;min-height:230px;display:flex;flex-direction:column;justify-content:space-between}.quote-mark{font:800 42px 'Manrope';color:var(--wine);line-height:1}.quote p{font-size:16px;margin-top:8px}.quote small{color:var(--muted);margin-top:28px}.contact{background:var(--wine);color:#fff;padding:112px 0}.contact .eyebrow{color:var(--pale)}.contact h2{font:800 clamp(56px,9vw,124px)/.86 'Manrope';letter-spacing:-.075em;max-width:1120px}.contact h2 em{font-style:normal;color:var(--pale)}.contact-row{display:flex;justify-content:space-between;gap:38px;align-items:end;margin-top:58px;padding-top:25px;border-top:1px solid #ffffff55}.contact-links{display:flex;gap:25px;flex-wrap:wrap}.contact-links a{text-decoration:underline;text-underline-offset:4px}.contact .btn{border-color:#fff}.contact .btn.primary{background:#fff;color:var(--ink)}.contact-note{max-width:340px;color:#ffffffbd;font-size:13px}.footer{background:var(--ink);color:#999;padding:24px 0;font-size:12px}.footer-row{display:flex;justify-content:space-between;gap:20px}.modal{position:fixed;inset:0;background:#111e;z-index:100;display:none;overflow:auto;padding:26px}.modal.open{display:block}.modal-shell{background:var(--bg);max-width:1240px;margin:auto;min-height:92vh;border-radius:24px;overflow:hidden}.modal-top{position:sticky;top:0;z-index:3;background:#f7f7f4ef;backdrop-filter:blur(14px);display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid var(--line)}.close{border:1px solid var(--ink);background:transparent;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:21px}.story-hero{padding:66px 60px 48px;border-bottom:1px solid var(--line)}.story-hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:end}.story-hero h2{font:800 clamp(46px,7vw,92px)/.91 'Manrope';letter-spacing:-.065em}.story-intro{color:var(--muted);font-size:18px;max-width:560px}.story-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:42px}.story-meta-item{background:var(--bg);padding:19px}.story-meta-item span{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.1em}.story-meta-item b{display:block;margin-top:6px;font-size:12px}.story-gallery{padding:24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.story-gallery figure{background:#e7e7e1;border-radius:15px;overflow:hidden}.story-gallery img{width:100%;height:auto;display:block}.story-gallery figure:first-child{grid-column:1/-1}.all-grid{padding:28px;columns:4 220px;column-gap:14px}.all-grid img{width:100%;height:auto;display:block;margin:0 0 10px;break-inside:avoid;border-radius:11px}.all-item{break-inside:avoid;margin-bottom:17px}.all-label{font-size:11px;color:var(--muted);margin-bottom:15px}@media(max-width:960px){.hero-grid,.manifesto-grid,.about-grid,.story-hero-grid{grid-template-columns:1fr}.portrait{margin:18px 0 0;max-width:430px}.statement-inner{grid-template-columns:1fr 1fr}.statement-item:nth-child(2){border-right:0}.statement-item:nth-child(-n+2){border-bottom:1px solid var(--line)}.work-head{grid-template-columns:1fr}.proof-grid{grid-template-columns:1fr}.proof-cell{border-right:0;border-bottom:1px solid var(--line)}.proof-cell:last-child{border-bottom:0}.test-grid{grid-template-columns:1fr}.navlinks,.nav-cta{display:none}}@media(max-width:700px){.wrap{width:min(calc(100% - 28px),var(--max))}.section{padding:82px 0}.hero{padding:122px 0 72px}.hero h1{font-size:clamp(48px,14vw,72px);line-height:.93}.hero h1 .outline{-webkit-text-stroke:1px}.hero-meta,.statement-inner,.project-grid,.capability-grid,.process-grid,.about-notes,.story-meta{grid-template-columns:1fr}.statement-item{border-right:0;border-bottom:1px solid var(--line)}.statement-item:last-child{border-bottom:0}.project-card:first-child{grid-column:auto}.project-card:first-child .project-media,.project-media{aspect-ratio:4/3}.project-foot{align-items:flex-start;flex-direction:column}.capability:nth-child(odd){border-right:0}.capability:nth-child(even){padding-left:0}.principle{grid-template-columns:44px 1fr}.principle p{grid-column:2}.step{border-right:0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}.about-note{border-right:0!important}.about-note:nth-last-child(-n+2){border-bottom:1px solid var(--line)}.about-note:last-child{border-bottom:0}.contact-row,.footer-row{display:block}.contact-note{margin-top:28px}.modal{padding:0}.modal-shell{border-radius:0;min-height:100vh}.story-hero{padding:42px 20px 30px}.story-gallery{padding:14px;grid-template-columns:1fr}.story-gallery figure:first-child{grid-column:auto}.all-grid{padding:16px;columns:2 130px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-</style>
+<link rel="stylesheet" href="portfolio-v2.css">
 </head>
 <body>
-<header class="topbar"><div class="wrap nav"><a class="brand" href="#top">ODUSINA <span>ISAAC</span></a><nav class="navlinks" aria-label="Primary navigation"><a href="#work">Work</a><a href="#approach">Approach</a><a href="#about">About</a><a href="#contact">Contact</a></nav><a class="nav-cta" href="#contact">Start a project</a></div></header>
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="#top">ODUSINA <span>ISAAC</span></a>
+    <nav class="navlinks" aria-label="Primary navigation">
+      <a href="#work">Work</a>
+      <a href="#approach">Approach</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="nav-cta" href="#contact">Start a project</a>
+  </div>
+</header>
+
 <main id="top">
-<section class="hero"><div class="wrap hero-grid"><div><div class="eyebrow mono">Brand Identity &amp; Visual Designer</div><h1>I make brands <span class="outline">look</span> <em>impossible</em> to ignore.</h1><div class="hero-copy"><p>I help ambitious businesses turn ideas into distinctive identity systems, packaging, campaigns and digital experiences built to communicate clearly and compete confidently.</p><div class="actions"><a class="btn primary" href="#work">Explore selected work ↗</a><a class="btn" href="#contact">Discuss a project</a></div><div class="hero-meta"><div class="mono">Based in<strong>Nigeria · Working globally</strong></div><div class="mono">Experience<strong>7+ years across brand &amp; visual design</strong></div></div></div></div><div class="portrait"><div class="portrait-frame"><img src="assets/odusina-isaac-headshot.jpg" alt="Professional portrait of Odusina Isaac"></div><div class="portrait-tag">Brand Designer / Visual Designer</div></div></div></section>
-<div class="statement-strip"><div class="wrap statement-inner"><div class="statement-item"><span>01</span>Identity systems</div><div class="statement-item"><span>02</span>Packaging</div><div class="statement-item"><span>03</span>Campaigns</div><div class="statement-item"><span>04</span>Digital experiences</div></div></div>
-<section class="section" id="work"><div class="wrap"><div class="work-head"><div><div class="eyebrow mono">01 / Selected work</div><h2 class="section-title">Work with a reason<br>behind every choice.</h2></div><p class="section-intro">A focused selection of identity, packaging and campaign work. Each project is presented as a connected design system rather than a collection of isolated graphics.</p></div><div class="filters" aria-label="Portfolio filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="branding">Brand Identity</button><button class="filter" data-filter="packaging">Packaging</button><button class="filter" data-filter="social">Campaigns</button></div><div class="project-grid" id="projects"><div class="empty">Curating selected work...</div></div><div class="gallery-foot"><button class="btn" id="all-work-btn">View complete archive ↗</button></div></div></section>
-<section class="section manifesto" id="approach"><div class="wrap manifesto-grid"><div><div class="eyebrow mono">02 / Design position</div><h2 class="section-title">Not decoration.<br>Design that carries <em>meaning.</em></h2></div><div><p class="manifesto-copy">A strong visual identity should help a business become easier to <em>recognise, trust and remember.</em></p><div class="principles"><article class="principle"><div class="mono">01</div><h3>Clarity first</h3><p>Hierarchy, message and audience come before visual noise. The work should make communication easier, not merely prettier.</p></article><article class="principle"><div class="mono">02</div><h3>Build systems</h3><p>A logo is only the beginning. I think in repeatable visual systems that can move across packaging, campaigns, print and digital touchpoints.</p></article><article class="principle"><div class="mono">03</div><h3>Design for reality</h3><p>Production constraints, materials, dimensions, budgets and handoff matter. Good design still has to work when it leaves the screen.</p></article></div></div></div></section>
-<section><div class="wrap"><div class="proof-grid"><div class="proof-cell"><div class="proof-number">7+</div><div class="proof-label">Years shaping brands, campaigns and visual communication.</div></div><div class="proof-cell"><div class="proof-number">4×</div><div class="proof-label">Core disciplines: identity, packaging, campaigns and digital.</div></div><div class="proof-cell"><div class="proof-number">01</div><div class="proof-label">Connected point of view from concept through production.</div></div></div></div></section>
-<section class="section about" id="about"><div class="wrap about-grid"><div><div class="eyebrow mono">03 / About</div><h2 class="section-title">Designer.<br>Problem solver.<br>Builder.</h2></div><div><div class="about-copy"><p>I'm Odusina Isaac, a Brand Identity and Visual Designer focused on helping organisations communicate with more clarity, consistency and confidence.</p><p>My work spans brand identity, packaging, campaign design, production artwork and digital experiences. That range gives me a practical understanding of how a brand has to behave across both screens and physical applications.</p><p>I care about the thinking beneath the visual: the audience, hierarchy, production reality and business goal that make design useful as well as memorable.</p></div><div class="about-notes"><div class="about-note"><span>Base</span><strong>Nigeria</strong></div><div class="about-note"><span>Availability</span><strong>Selected projects &amp; opportunities</strong></div><div class="about-note"><span>Practice</span><strong>Independent + Zayon Creative Studios</strong></div><div class="about-note"><span>Focus</span><strong>Identity · Packaging · Campaigns · Digital</strong></div></div></div></div></section>
-<section class="section"><div class="wrap"><div class="eyebrow mono">04 / Capabilities</div><h2 class="section-title">A focused practice,<br>with useful range.</h2><div class="capability-grid"><article class="capability"><div class="capability-num mono">01</div><h3>Brand identity</h3><p>Visual identity systems, logo direction, typography, colour, brand assets and practical guidelines built for consistency.</p></article><article class="capability"><div class="capability-num mono">02</div><h3>Packaging &amp; production</h3><p>Packaging, labels, sacks, print applications and production-ready artwork shaped around real materials and constraints.</p></article><article class="capability"><div class="capability-num mono">03</div><h3>Campaign systems</h3><p>Campaign concepts, social content systems, promotional design and visual toolkits that keep communication coherent.</p></article><article class="capability"><div class="capability-num mono">04</div><h3>Digital experiences</h3><p>Responsive portfolio, corporate and landing-page experiences connecting visual identity with usable digital design.</p></article></div></div></section>
-<section class="section rule"><div class="wrap"><div class="eyebrow mono">05 / Process</div><h2 class="section-title">Think. Build. Apply.</h2><div class="process-grid"><article class="step"><div class="step-no mono">01 / Understand</div><h3>Find the real problem</h3><p>Clarify the audience, context, objectives, competitive environment and practical constraints around the brief.</p></article><article class="step"><div class="step-no mono">02 / Build</div><h3>Create the visual system</h3><p>Explore and refine a direction into a coherent language with enough structure to remain recognisable across touchpoints.</p></article><article class="step"><div class="step-no mono">03 / Apply</div><h3>Make it work in reality</h3><p>Translate the system into the deliverables, formats and production conditions where the brand will actually live.</p></article></div></div></section>
-<section class="section testimonials"><div class="wrap"><div class="eyebrow mono">06 / Client perspective</div><h2 class="section-title">Good work should<br>leave evidence.</h2><div class="test-grid" id="testimonials"><div class="empty">Client feedback will appear here as it is added.</div></div></div></section>
-<section class="contact" id="contact"><div class="wrap"><div class="eyebrow mono">07 / Contact</div><h2>Building something<br>worth <em>remembering?</em></h2><div class="contact-row"><div><div class="contact-links" id="contact-links"><a href="https://www.linkedin.com/in/odusina-isaac/" target="_blank" rel="noopener">LinkedIn</a><a href="https://x.com/isaacodusina" target="_blank" rel="noopener">X / Twitter</a></div><div class="actions"><a class="btn primary" id="email-btn" href="#contact">Start a conversation ↗</a></div></div><p class="contact-note">Available for selected brand identity, packaging, campaign and digital projects, creative collaborations and professional opportunities.</p></div></div></section>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow mono">Brand Identity &amp; Visual Designer</div>
+      <h1>I make brands <span class="outline">look</span> <em>impossible</em> to ignore.</h1>
+      <div class="hero-copy">
+        <p>I help ambitious businesses turn ideas into distinctive identity systems, packaging, campaigns and digital experiences built to communicate clearly and compete confidently.</p>
+        <div class="actions">
+          <a class="btn primary" href="#work">Explore selected work ↗</a>
+          <a class="btn" href="#contact">Discuss a project</a>
+        </div>
+        <div class="hero-meta">
+          <div class="mono">Based in<strong>Nigeria · Working globally</strong></div>
+          <div class="mono">Experience<strong>7+ years across brand &amp; visual design</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="portrait">
+      <div class="portrait-frame">
+        <img src="assets/odusina-isaac-headshot.jpg" alt="Professional portrait of Odusina Isaac">
+      </div>
+      <div class="portrait-tag">Brand Designer / Visual Designer</div>
+    </div>
+  </div>
+</section>
+
+<div class="statement-strip">
+  <div class="wrap statement-inner">
+    <div class="statement-item"><span>01</span>Identity systems</div>
+    <div class="statement-item"><span>02</span>Packaging</div>
+    <div class="statement-item"><span>03</span>Campaigns</div>
+    <div class="statement-item"><span>04</span>Digital experiences</div>
+  </div>
+</div>
+
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="work-head">
+      <div>
+        <div class="eyebrow mono">01 / Selected work</div>
+        <h2 class="section-title">Work with a reason<br>behind every choice.</h2>
+      </div>
+      <p class="section-intro">A focused selection of identity, packaging and campaign work. Each project is presented as a connected design system rather than a collection of isolated graphics.</p>
+    </div>
+
+    <div class="filters" aria-label="Portfolio filters">
+      <button class="filter active" data-filter="all">All</button>
+      <button class="filter" data-filter="branding">Brand Identity</button>
+      <button class="filter" data-filter="packaging">Packaging</button>
+      <button class="filter" data-filter="social">Campaigns</button>
+    </div>
+
+    <div class="project-grid" id="projects">
+      <div class="empty">Curating selected work...</div>
+    </div>
+
+    <div class="gallery-foot">
+      <button class="btn" id="all-work-btn">View complete archive ↗</button>
+    </div>
+  </div>
+</section>
+
+<section class="section manifesto" id="approach">
+  <div class="wrap manifesto-grid">
+    <div>
+      <div class="eyebrow mono">02 / Design position</div>
+      <h2 class="section-title">Not decoration.<br>Design that carries <em>meaning.</em></h2>
+    </div>
+    <div>
+      <p class="manifesto-copy">A strong visual identity should help a business become easier to <em>recognise, trust and remember.</em></p>
+      <div class="principles">
+        <article class="principle">
+          <div class="mono">01</div><h3>Clarity first</h3>
+          <p>Hierarchy, message and audience come before visual noise. The work should make communication easier, not merely prettier.</p>
+        </article>
+        <article class="principle">
+          <div class="mono">02</div><h3>Build systems</h3>
+          <p>A logo is only the beginning. I think in repeatable visual systems that can move across packaging, campaigns, print and digital touchpoints.</p>
+        </article>
+        <article class="principle">
+          <div class="mono">03</div><h3>Design for reality</h3>
+          <p>Production constraints, materials, dimensions, budgets and handoff matter. Good design still has to work when it leaves the screen.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="proof-grid">
+      <div class="proof-cell">
+        <div class="proof-number">7+</div>
+        <div class="proof-label">Years shaping brands, campaigns and visual communication.</div>
+      </div>
+      <div class="proof-cell">
+        <div class="proof-number">4×</div>
+        <div class="proof-label">Core disciplines: identity, packaging, campaigns and digital.</div>
+      </div>
+      <div class="proof-cell">
+        <div class="proof-number">01</div>
+        <div class="proof-label">Connected point of view from concept through production.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section about" id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="eyebrow mono">03 / About</div>
+      <h2 class="section-title">Designer.<br>Problem solver.<br>Builder.</h2>
+    </div>
+    <div>
+      <div class="about-copy">
+        <p>I'm Odusina Isaac, a Brand Identity and Visual Designer focused on helping organisations communicate with more clarity, consistency and confidence.</p>
+        <p>My work spans brand identity, packaging, campaign design, production artwork and digital experiences. That range gives me a practical understanding of how a brand has to behave across both screens and physical applications.</p>
+        <p>I care about the thinking beneath the visual: the audience, hierarchy, production reality and business goal that make design useful as well as memorable.</p>
+      </div>
+      <div class="about-notes">
+        <div class="about-note"><span>Base</span><strong>Nigeria</strong></div>
+        <div class="about-note"><span>Availability</span><strong>Selected projects &amp; opportunities</strong></div>
+        <div class="about-note"><span>Practice</span><strong>Independent + Zayon Creative Studios</strong></div>
+        <div class="about-note"><span>Focus</span><strong>Identity · Packaging · Campaigns · Digital</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow mono">04 / Capabilities</div>
+    <h2 class="section-title">A focused practice,<br>with useful range.</h2>
+    <div class="capability-grid">
+      <article class="capability">
+        <div class="capability-num mono">01</div>
+        <h3>Brand identity</h3>
+        <p>Visual identity systems, logo direction, typography, colour, brand assets and practical guidelines built for consistency.</p>
+      </article>
+      <article class="capability">
+        <div class="capability-num mono">02</div>
+        <h3>Packaging &amp; production</h3>
+        <p>Packaging, labels, sacks, print applications and production-ready artwork shaped around real materials and constraints.</p>
+      </article>
+      <article class="capability">
+        <div class="capability-num mono">03</div>
+        <h3>Campaign systems</h3>
+        <p>Campaign concepts, social content systems, promotional design and visual toolkits that keep communication coherent.</p>
+      </article>
+      <article class="capability">
+        <div class="capability-num mono">04</div>
+        <h3>Digital experiences</h3>
+        <p>Responsive portfolio, corporate and landing-page experiences connecting visual identity with usable digital design.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section rule">
+  <div class="wrap">
+    <div class="eyebrow mono">05 / Process</div>
+    <h2 class="section-title">Think. Build. Apply.</h2>
+    <div class="process-grid">
+      <article class="step">
+        <div class="step-no mono">01 / Understand</div>
+        <h3>Find the real problem</h3>
+        <p>Clarify the audience, context, objectives, competitive environment and practical constraints around the brief.</p>
+      </article>
+      <article class="step">
+        <div class="step-no mono">02 / Build</div>
+        <h3>Create the visual system</h3>
+        <p>Explore and refine a direction into a coherent language with enough structure to remain recognisable across touchpoints.</p>
+      </article>
+      <article class="step">
+        <div class="step-no mono">03 / Apply</div>
+        <h3>Make it work in reality</h3>
+        <p>Translate the system into the deliverables, formats and production conditions where the brand will actually live.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section testimonials">
+  <div class="wrap">
+    <div class="eyebrow mono">06 / Client perspective</div>
+    <h2 class="section-title">Good work should<br>leave evidence.</h2>
+    <div class="test-grid" id="testimonials">
+      <div class="empty">Client feedback will appear here as it is added.</div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow mono">07 / Contact</div>
+    <h2>Building something<br>worth <em>remembering?</em></h2>
+    <div class="contact-row">
+      <div>
+        <div class="contact-links" id="contact-links">
+          <a href="https://www.linkedin.com/in/odusina-isaac/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com/isaacodusina" target="_blank" rel="noopener">X / Twitter</a>
+        </div>
+        <div class="actions">
+          <a class="btn primary" id="email-btn" href="#contact">Start a conversation ↗</a>
+        </div>
+      </div>
+      <p class="contact-note">Available for selected brand identity, packaging, campaign and digital projects, creative collaborations and professional opportunities.</p>
+    </div>
+  </div>
+</section>
 </main>
-<footer class="footer"><div class="wrap footer-row"><span>© <span id="year"></span> Odusina Isaac</span><span>Brand Identity &amp; Visual Designer</span><span>Designed &amp; built with intention.</span></div></footer>
-<div class="modal" id="case-modal" aria-hidden="true"><div class="modal-shell"><div class="modal-top"><span class="mono">Selected project</span><button class="close" data-close="case-modal" aria-label="Close project">×</button></div><div class="story-hero"><div class="story-hero-grid"><div><div class="eyebrow mono" id="story-cat"></div><h2 id="story-title"></h2></div><p class="story-intro" id="story-text"></p></div><div class="story-meta"><div class="story-meta-item"><span>Role</span><b id="story-role"></b></div><div class="story-meta-item"><span>Deliverables</span><b id="story-deliverables"></b></div><div class="story-meta-item"><span>Project set</span><b id="story-count"></b></div></div></div><div class="story-gallery" id="story-gallery"></div></div></div>
-<div class="modal" id="all-modal" aria-hidden="true"><div class="modal-shell"><div class="modal-top"><span class="mono">Complete work archive</span><button class="close" data-close="all-modal" aria-label="Close archive">×</button></div><div class="all-grid" id="all-grid"></div></div></div>
-<script type="module">
-import {createClient} from 'https://esm.sh/@supabase/supabase-js@2';
-const URL='https://wwuutndlekinlkdgjyao.supabase.co';const KEY='sb_publishable_JxpzvFGpaX83HsVJfweM4A__Fi4jY24';const BUCKET='zayon-media';const sb=createClient(URL,KEY);let groups=[];let archiveItems=[];const labels={social:'Campaign Design',branding:'Brand Identity',packaging:'Packaging',digital:'Digital Design',web:'Digital Design',other:'Visual Design'};const defaults={branding:{role:'Brand Identity · Visual Design',deliverables:'Identity system · Brand assets',summary:title=>`Selected identity work for ${title}, presented as a connected visual system rather than an isolated logo.`},packaging:{role:'Packaging Design · Visual Direction',deliverables:'Packaging · Production artwork',summary:title=>`Packaging work for ${title}, bringing brand recognition, hierarchy and production requirements into one practical visual system.`},social:{role:'Campaign Design · Visual Direction',deliverables:'Campaign system · Social & promotional design',summary:title=>`A connected campaign system for ${title}, showing how one visual direction carries consistently across multiple communications.`},digital:{role:'Digital Design · Visual Direction',deliverables:'Web & digital experience',summary:title=>`A digital design project for ${title}, focused on translating the brand into a clear and usable screen experience.`},other:{role:'Visual Design',deliverables:'Selected design applications',summary:title=>`A curated visual project for ${title}, presented as a connected body of work.`}};const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));function publicUrl(path){return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl}function cleanTitle(title='Selected Project'){return title.replace(/\.[a-z0-9]+$/i,'').replace(/\s+\d+$/,'').trim()||'Selected Project'}function groupKey(p){const s=(p.title||'Untitled').toLowerCase().replace(/\.[a-z0-9]+$/,'').replace(/[\-_]+/g,' ').replace(/\b(mockup|design|post|flyer|slide|carousel|page|copy|final|rev|revision|version|v\d+)\b/g,' ').replace(/\b\d+\b/g,' ').replace(/\s+/g,' ').trim();return `${p.category||'other'}:${s.split(' ').slice(0,4).join(' ')}`}function dynamicGroups(data){const map=new Map();data.forEach(p=>{const key=groupKey(p);if(!map.has(key)){map.set(key,{key,title:cleanTitle(p.title),category:p.category||'other',categoryLabel:p.category_label||labels[p.category]||'Visual Design',summary:p.summary||p.description||'',role:p.role||'',deliverables:p.deliverables||'',sortOrder:p.sort_order??999,items:[]})}const g=map.get(key);g.items.push({title:p.title||g.title,src:publicUrl(p.image_path),sortOrder:p.sort_order??999});if(!g.summary&&(p.summary||p.description))g.summary=p.summary||p.description;if(!g.role&&p.role)g.role=p.role;if(!g.deliverables&&p.deliverables)g.deliverables=p.deliverables});return[...map.values()].sort((a,b)=>a.sortOrder-b.sortOrder)}function staticGroups(payload){return(payload?.projects||[]).map(p=>({key:p.id||p.title,title:p.title,category:p.category||'other',categoryLabel:p.categoryLabel||labels[p.category]||'Visual Design',summary:p.summary||'',role:p.role||'',deliverables:p.deliverables||'',sortOrder:p.sortOrder??999,items:(p.images||[]).map((src,i)=>({title:p.title,src,sortOrder:i}))})).sort((a,b)=>a.sortOrder-b.sortOrder)}function hydrateGroup(g){const d=defaults[g.category]||defaults.other;return{...g,categoryLabel:g.categoryLabel||labels[g.category]||'Visual Design',summary:g.summary||d.summary(g.title),role:g.role||d.role,deliverables:g.deliverables||d.deliverables}}function rebuildArchive(){archiveItems=groups.flatMap(g=>g.items.map(item=>({...item,groupTitle:g.title,category:g.category,categoryLabel:g.categoryLabel})))}function render(filter='all'){const root=document.getElementById('projects');const set=groups.filter(g=>filter==='all'||g.category===filter).slice(0,6);if(!set.length){root.innerHTML='<div class="empty">No selected projects in this category yet.</div>';return}root.innerHTML='';set.forEach((g,index)=>{const hero=g.items[0];if(!hero)return;const card=document.createElement('article');card.className='project-card';card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-label',`Open ${g.title} project`);card.innerHTML=`<div class="project-media"><img loading="${index===0?'eager':'lazy'}" src="${esc(hero.src)}" alt="${esc(g.title)}"><div class="project-index mono">${String(index+1).padStart(2,'0')} / Selected</div></div><div class="project-info"><div class="project-kicker mono"><span>${esc(g.categoryLabel)}</span><span>${g.items.length} ${g.items.length===1?'piece':'pieces'}</span></div><div class="project-title">${esc(g.title)}</div><p class="project-summary">${esc(g.summary)}</p><div class="project-foot"><span class="project-role">${esc(g.role)}</span><span class="project-link">Open project ↗</span></div></div>`;card.addEventListener('click',()=>openStory(g));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openStory(g)}});root.appendChild(card)})}function openStory(g){document.getElementById('story-cat').textContent=g.categoryLabel;document.getElementById('story-title').textContent=g.title;document.getElementById('story-text').textContent=g.summary;document.getElementById('story-role').textContent=g.role;document.getElementById('story-deliverables').textContent=g.deliverables;document.getElementById('story-count').textContent=`${g.items.length} related ${g.items.length===1?'piece':'pieces'}`;document.getElementById('story-gallery').innerHTML=g.items.map(item=>`<figure><img loading="lazy" src="${esc(item.src)}" alt="${esc(item.title||g.title)}"></figure>`).join('');openModal('case-modal')}function openModal(id){const el=document.getElementById(id);el.classList.add('open');el.setAttribute('aria-hidden','false');document.body.classList.add('lock')}function closeModal(id){const el=document.getElementById(id);el.classList.remove('open');el.setAttribute('aria-hidden','true');document.body.classList.remove('lock')}document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(m=>closeModal(m.id))});document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(b.dataset.filter)});document.getElementById('all-work-btn').onclick=()=>{const grid=document.getElementById('all-grid');if(!archiveItems.length){grid.innerHTML='<div class="empty">No archive items are available yet.</div>'}else{grid.innerHTML=archiveItems.map(item=>`<div class="all-item"><img loading="lazy" src="${esc(item.src)}" alt="${esc(item.title||item.groupTitle)}"><div class="all-label">${esc(item.groupTitle)} · ${esc(item.categoryLabel)}</div></div>`).join('')}openModal('all-modal')};async function loadPortfolio(){try{const{data,error}=await sb.from('portfolio_projects').select('*').order('sort_order',{ascending:true,nullsFirst:false});if(error)throw error;const dynamic=dynamicGroups(data||[]);if(dynamic.length)groups=dynamic.map(hydrateGroup)}catch(error){console.warn('Supabase portfolio unavailable, trying static portfolio data.',error)}if(!groups.length){try{const response=await fetch('portfolio-data.json',{cache:'no-store'});if(response.ok){const payload=await response.json();groups=staticGroups(payload).map(hydrateGroup)}}catch(error){console.warn('Static portfolio fallback unavailable.',error)}}rebuildArchive();render()}async function loadContent(){try{const{data}=await sb.from('site_content').select('*').eq('id',1).maybeSingle();if(!data)return;if(data.contact_email){const e=document.getElementById('email-btn');e.href=`mailto:${data.contact_email}`;const a=document.createElement('a');a.href=`mailto:${data.contact_email}`;a.textContent='Email';document.getElementById('contact-links').prepend(a)}}catch(error){console.warn('Site content unavailable.',error)}}async function loadTestimonials(){const root=document.getElementById('testimonials');try{const{data,error}=await sb.from('testimonials').select('*').order('sort_order',{ascending:true,nullsFirst:false});if(error)throw error;if(!data?.length){root.innerHTML='<div class="empty">Client feedback will appear here as it is added.</div>';return}root.innerHTML=data.slice(0,6).map(t=>`<article class="quote"><div><div class="quote-mark">“</div><p>${esc(t.quote)}</p></div><small>${esc(t.brand_name||'Client')}${t.brand_role?' · '+esc(t.brand_role):''}</small></article>`).join('')}catch(error){console.warn('Testimonials unavailable.',error);root.innerHTML='<div class="empty">Client feedback will appear here as it is added.</div>'}}document.getElementById('year').textContent=new Date().getFullYear();loadPortfolio();loadContent();loadTestimonials();
-</script>
+
+<footer class="footer">
+  <div class="wrap footer-row">
+    <span>© <span id="year"></span> Odusina Isaac</span>
+    <span>Brand Identity &amp; Visual Designer</span>
+    <span>Designed &amp; built with intention.</span>
+  </div>
+</footer>
+
+<div class="modal" id="case-modal" aria-hidden="true">
+  <div class="modal-shell">
+    <div class="modal-top">
+      <span class="mono">Selected project</span>
+      <button class="close" data-close="case-modal" aria-label="Close project">×</button>
+    </div>
+    <div class="story-hero">
+      <div class="story-hero-grid">
+        <div>
+          <div class="eyebrow mono" id="story-cat"></div>
+          <h2 id="story-title"></h2>
+        </div>
+        <p class="story-intro" id="story-text"></p>
+      </div>
+      <div class="story-meta">
+        <div class="story-meta-item"><span>Role</span><b id="story-role"></b></div>
+        <div class="story-meta-item"><span>Deliverables</span><b id="story-deliverables"></b></div>
+        <div class="story-meta-item"><span>Project set</span><b id="story-count"></b></div>
+      </div>
+    </div>
+    <div class="story-narrative" id="story-narrative"></div>
+    <div class="story-gallery" id="story-gallery"></div>
+  </div>
+</div>
+
+<div class="modal" id="all-modal" aria-hidden="true">
+  <div class="modal-shell">
+    <div class="modal-top">
+      <span class="mono">Complete work archive</span>
+      <button class="close" data-close="all-modal" aria-label="Close archive">×</button>
+    </div>
+    <div class="all-grid" id="all-grid"></div>
+  </div>
+</div>
+
+<script type="module" src="portfolio-v2.js"></script>
 </body>
 </html>
