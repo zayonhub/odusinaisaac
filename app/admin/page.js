@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
 import { isAdmin } from '../../lib/auth';
 import { getAdminState } from '../../lib/cms';
-import AdminDashboard from './AdminDashboard';
+import AdminDashboard from './AdminDashboardV2';
+import './admin-extra.css';
 
 export const dynamic = 'force-dynamic';
 
