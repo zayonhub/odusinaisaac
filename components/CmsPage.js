@@ -44,7 +44,7 @@ function ProjectGrid({ c, projects }) {
 }
 
 function CTA({ c }) {
-  return <section className="section cta"><div className="wrap"><div className="mono">{c.eyebrow}</div><h2>{c.title}</h2>{c.body && <p>{c.body}</p>}{c.button_label && <div className="actions"><a className="btn primary" href={c.button_url || '#'}>{c.button_label}</a></div>}</section>;
+  return <section className="section cta"><div className="wrap"><div className="mono">{c.eyebrow}</div><h2>{c.title}</h2>{c.body && <p>{c.body}</p>}{c.button_label && <div className="actions"><a className="btn primary" href={c.button_url || '#'}>{c.button_label}</a></div>}</div></section>;
 }
 
 export default function CmsPage({ page, projects = [], mediaMap = {}, project = null }) {
