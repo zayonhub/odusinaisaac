@@ -15,7 +15,7 @@ function Footer() {
 
 function Hero({ c, mediaMap }) {
   const image = mediaUrl(c.media_id || c.media_url, mediaMap);
-  return <section className="hero"><div className="wrap hero-grid"><div><div className="mono" style={{color:'var(--wine)',marginBottom:16}}>{c.eyebrow}</div><h1>{c.title}</h1><p>{c.body}</p><div className="actions">{c.primary_label && <a className="btn primary" href={c.primary_url || '#'}>{c.primary_label}</a>}{c.secondary_label && <a className="btn" href={c.secondary_url || '#'}>{c.secondary_label}</a>}</div></div>{image && <div className="hero-media"><img src={image} alt={c.alt || c.title || ''}/></div>}</div></section>;
+  return <section className="hero"><div className="wrap hero-grid"><div><div className="mono" style={{color:'var(--wine)',marginBottom:16}}>{c.eyebrow}</div><h1>{c.title}</h1><p>{c.body}</p>{c.meta && <p className="muted">{c.meta}</p>}<div className="actions">{c.primary_label && <a className="btn primary" href={c.primary_url || '#'}>{c.primary_label}</a>}{c.secondary_label && <a className="btn" href={c.secondary_url || '#'}>{c.secondary_label}</a>}</div></div>{image && <div className="hero-media"><img src={image} alt={c.alt || c.title || ''}/></div>}</div></section>;
 }
 
 function RichText({ c }) {
