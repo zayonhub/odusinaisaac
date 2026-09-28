@@ -13,9 +13,10 @@ function Footer() {
   return <footer className="section"><div className="wrap muted">© {new Date().getFullYear()} Odusina Isaac · Brand Identity & Visual Designer</div></footer>;
 }
 
-function Hero({ c, mediaMap }) {
+function Hero({ c, mediaMap, fallbackMeta='' }) {
   const image = mediaUrl(c.media_id || c.media_url, mediaMap);
-  return <section className="hero"><div className="wrap hero-grid"><div><div className="mono" style={{color:'var(--wine)',marginBottom:16}}>{c.eyebrow}</div><h1>{c.title}</h1><p>{c.body}</p>{c.meta && <p className="muted">{c.meta}</p>}<div className="actions">{c.primary_label && <a className="btn primary" href={c.primary_url || '#'}>{c.primary_label}</a>}{c.secondary_label && <a className="btn" href={c.secondary_url || '#'}>{c.secondary_label}</a>}</div></div>{image && <div className="hero-media"><img src={image} alt={c.alt || c.title || ''}/></div>}</div></section>;
+  const supporting = c.meta || fallbackMeta;
+  return <section className="hero"><div className="wrap hero-grid"><div><div className="mono" style={{color:'var(--wine)',marginBottom:16}}>{c.eyebrow}</div><h1>{c.title}</h1><p>{c.body}</p>{supporting && <p className="muted">{supporting}</p>}<div className="actions">{c.primary_label && <a className="btn primary" href={c.primary_url || '#'}>{c.primary_label}</a>}{c.secondary_label && <a className="btn" href={c.secondary_url || '#'}>{c.secondary_label}</a>}</div></div>{image && <div className="hero-media"><img src={image} alt={c.alt || c.title || ''}/></div>}</div></section>;
 }
 
 function RichText({ c }) {
@@ -50,7 +51,7 @@ export default function CmsPage({ page, projects = [], mediaMap = {}, project = 
   const sections = page?.sections || project?.sections || [];
   return <><Header/><main>{project && !sections.length && <section className="hero"><div className="wrap hero-grid"><div><div className="mono" style={{color:'var(--wine)'}}>{project.category}</div><h1>{project.title}</h1><p>{project.summary}</p><p className="muted">{project.role}</p></div>{project.cover_url && <div className="hero-media"><img src={project.cover_url} alt={project.title}/></div>}</div></section>}{sections.map(s => {
     const c = s.content || {};
-    if (s.type === 'hero') return <Hero key={s.id} c={c} mediaMap={mediaMap}/>;
+    if (s.type === 'hero') return <Hero key={s.id} c={c} mediaMap={mediaMap} fallbackMeta={project?.role || ''}/>;
     if (s.type === 'rich_text') return <RichText key={s.id} c={c}/>;
     if (s.type === 'image') return <ImageSection key={s.id} c={c} mediaMap={mediaMap}/>;
     if (s.type === 'split') return <Split key={s.id} c={c} mediaMap={mediaMap}/>;
