@@ -14,7 +14,7 @@ function Footer() {
 }
 
 function Hero({ c, mediaMap, fallbackMeta='' }) {
-  const image = mediaUrl(c.media_id || c.media_url, mediaMap);
+  const image = mediaUrl(c.media_id, mediaMap) || mediaUrl(c.media_url, mediaMap);
   const supporting = c.meta || fallbackMeta;
   return <section className="hero"><div className="wrap hero-grid"><div><div className="mono" style={{color:'var(--wine)',marginBottom:16}}>{c.eyebrow}</div><h1>{c.title}</h1><p>{c.body}</p>{supporting && <p className="muted">{supporting}</p>}<div className="actions">{c.primary_label && <a className="btn primary" href={c.primary_url || '#'}>{c.primary_label}</a>}{c.secondary_label && <a className="btn" href={c.secondary_url || '#'}>{c.secondary_label}</a>}</div></div>{image && <div className="hero-media"><img src={image} alt={c.alt || c.title || ''}/></div>}</div></section>;
 }
@@ -24,27 +24,27 @@ function RichText({ c }) {
 }
 
 function ImageSection({ c, mediaMap }) {
-  const src = mediaUrl(c.media_id || c.media_url, mediaMap);
+  const src = mediaUrl(c.media_id, mediaMap) || mediaUrl(c.media_url, mediaMap);
   return <section className="section"><div className="wrap section-image">{src && <img src={src} alt={c.alt || ''}/>} {c.caption && <p className="muted">{c.caption}</p>}</div></section>;
 }
 
 function Split({ c, mediaMap }) {
-  const src = mediaUrl(c.media_id || c.media_url, mediaMap);
+  const src = mediaUrl(c.media_id, mediaMap) || mediaUrl(c.media_url, mediaMap);
   return <section className="section"><div className={`wrap split ${c.reverse ? 'reverse' : ''}`}><div><h2>{c.heading}</h2><p className="rich-copy">{c.body}</p></div>{src && <div className="section-image"><img src={src} alt={c.alt || ''}/></div>}</div></section>;
 }
 
 function Gallery({ c, mediaMap }) {
   const ids = Array.isArray(c.media_ids) ? c.media_ids : [];
-  return <section className="section"><div className="wrap">{c.heading && <h2 className="section-title">{c.heading}</h2>}<div className="gallery">{ids.map((id, i) => { const m = mediaMap[id]; if (!m) return null; return <figure key={`${id}-${i}`}><img src={m.public_url} alt={m.alt_text || ''}/>{m.caption && <figcaption>{m.caption}</figcaption>}</figure>; })}</div></div></section>;
+  return <section className="section"><div className="wrap">{c.heading && <h2 className="section-title">{c.heading}</h2>}<div className="gallery">{ids.map((id, i) => { const m = mediaMap[id]; if (!m?.public_url) return null; return <figure key={`${id}-${i}`}><img src={m.public_url} alt={m.alt_text || ''} loading="lazy"/>{m.caption && <figcaption>{m.caption}</figcaption>}</figure>; })}</div></div></section>;
 }
 
 function ProjectGrid({ c, projects }) {
   const set = (projects || []).slice(0, Number(c.limit) || 6);
-  return <section className="section"><div className="wrap"><h2 className="section-title">{c.heading || 'Selected work'}</h2>{c.intro && <p className="section-intro">{c.intro}</p>}<div className="project-grid">{set.map(p => <a className="project-card" key={p.id} href={`/projects/${p.slug}`}><img src={p.cover_url || ''} alt={p.title}/><div className="project-info"><div className="mono" style={{color:'var(--wine)'}}>{p.category}</div><div className="project-title">{p.title}</div><p className="muted">{p.summary}</p><div className="muted">{p.role}</div></div></a>)}</div></div></section>;
+  return <section className="section"><div className="wrap"><h2 className="section-title">{c.heading || 'Selected work'}</h2>{c.intro && <p className="section-intro">{c.intro}</p>}<div className="project-grid">{set.map(p => <a className="project-card" key={p.id} href={`/projects/${p.slug}`}><img src={p.cover_url || ''} alt={p.title} loading="lazy"/><div className="project-info"><div className="mono" style={{color:'var(--wine)'}}>{p.category}</div><div className="project-title">{p.title}</div><p className="muted">{p.summary}</p><div className="muted">{p.role}</div></div></a>)}</div></div></section>;
 }
 
 function CTA({ c }) {
-  return <section className="section cta"><div className="wrap"><div className="mono">{c.eyebrow}</div><h2>{c.title}</h2>{c.body && <p>{c.body}</p>}{c.button_label && <div className="actions"><a className="btn primary" href={c.button_url || '#'}>{c.button_label}</a></div>}</div></section>;
+  return <section className="section cta"><div className="wrap"><div className="mono">{c.eyebrow}</div><h2>{c.title}</h2>{c.body && <p>{c.body}</p>}{c.button_label && <div className="actions"><a className="btn primary" href={c.button_url || '#'}>{c.button_label}</a></div>}</section>;
 }
 
 export default function CmsPage({ page, projects = [], mediaMap = {}, project = null }) {
